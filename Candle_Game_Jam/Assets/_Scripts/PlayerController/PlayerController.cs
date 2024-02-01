@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour
 {
     public static PlayerController Player_Controller;
     public static Rigidbody2D Player_RigidBody;
+    public static SpriteRenderer Player_Renderer;
+    public static Animator Player_Animator;
 
     StateMachine Player_StateMachine;
 
@@ -19,6 +21,9 @@ public class PlayerController : MonoBehaviour
 
         Player_StateMachine = new StateMachine();
         Player_StateMachine.changeState(new Player_Movement());
+
+        Player_Renderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        Player_Animator = transform.GetChild(0).GetComponent<Animator>();
     }
 
     public void Update()
@@ -57,9 +62,11 @@ public class Player_Movement : stateDriverInterface
     public string ID => "Player_Movement";
     private Vector2 Movement;
 
+    private bool CurrentAnimationSet, StoredAnimationSet;
+
     public void onEnter()
     {
-
+        StoredAnimationSet = CurrentAnimationSet;
     }
 
     public void onExit()
@@ -87,6 +94,20 @@ public class Player_Movement : stateDriverInterface
     public void onUpdate()
     {
         Movement = Player_Input.Get_Movement().normalized;
+
+        CurrentAnimationSet = true ? Movement.magnitude != 0 : false;
+        if (StoredAnimationSet != CurrentAnimationSet)
+            StoredAnimationSet = CurrentAnimationSet;
+        PlayerController.Player_Animator.SetBool("Player_Moving", StoredAnimationSet);
+
+        if (Movement.x < 0)
+        {
+            PlayerController.Player_Renderer.flipX = true;
+        }
+        else if (Movement.x > 0)
+        {
+            PlayerController.Player_Renderer.flipX = false;
+        }
     }
 }
 #endregion

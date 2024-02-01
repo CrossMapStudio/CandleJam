@@ -11,6 +11,16 @@ public class GameManager : MonoBehaviour
 
     public static List<StatisticManager> Statistic_Managers;
 
+    public float HungerTick_Target;
+    public float ThirstTick_Target;
+    public float DarknessTick_Target;
+    public float HealthTick_Target;
+
+    private float HungerTick_Current;
+    private float ThirstTick_Current;
+    private float DarknessTick_Current;
+    private float HealthTick_Current;
+
     public void Awake()
     {
         Statistic_Managers = new List<StatisticManager>();
@@ -45,11 +55,35 @@ public class GameManager : MonoBehaviour
     public void Hunger_Tick()
     {
         //Time Based
+        if (HungerTick_Current < HungerTick_Target)
+        {
+            HungerTick_Current += Time.deltaTime;
+            if (HungerTick_Current >= HungerTick_Target)
+            {
+                HungerTick_Current = 0f;
+                foreach(StatisticManager element in Statistic_Managers)
+                {
+                    element.Adjust_Hunger(Random.Range(-1f, -2f));
+                }
+            }
+        }
     }
 
     public void Thirst_Tick()
     {
-        //Time Based / Stamina Based
+        //Time Based
+        if (ThirstTick_Current < ThirstTick_Target)
+        {
+            ThirstTick_Current += Time.deltaTime;
+            if (ThirstTick_Current >= ThirstTick_Target)
+            {
+                ThirstTick_Current = 0f;
+                foreach (StatisticManager element in Statistic_Managers)
+                {
+                    element.Adjust_Thirst(Random.Range(-1f, -2f));
+                }
+            }
+        }
     }
 
     public void Health_Tick()

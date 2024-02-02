@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask Interaction_Layer;
 
     [Header("Inventory")]
-    Item_Data[] Inventory;
+    InventoryItem_Stack[] Inventory;
 
     public void Awake()
     {
@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
         Player_Animator = transform.GetChild(0).GetComponent<Animator>();
         Player_Transform = transform;
 
-        Inventory = new Item_Data[5];
+        Inventory = new InventoryItem_Stack[8];
     }
 
     public void Update()
@@ -67,16 +67,18 @@ public class PlayerController : MonoBehaviour
         for(int i = 0; i < Inventory.Length; i++)
         {
             if (Inventory[i] == null) {
-                emptySlot = i;
+                if (emptySlot == -1)
+                    emptySlot = i;
                 continue;
             }
 
             //Check if there is matching IDs --- If the Current Stack Amount of the Item is Less than the capacity, add to the number, else find another slot --- no slots available dont add the item return false ---
-            if (Inventory[i].ID == data.ID)
+            if (Inventory[i].data.ID == data.ID)
             {
-                if (Inventory[i].StackAmount < Inventory[i].StackCapacity)
+                if (Inventory[i].currentStack < Inventory[i].data.StackCapacity)
                 {
-                    Inventory[i].StackAmount++;
+                    Inventory[i].currentStack++;
+                    UIManager.Update_Inventory(i, Inventory[i]);
                     return true;
                 }
                 else
@@ -86,8 +88,8 @@ public class PlayerController : MonoBehaviour
 
         if (emptySlot != -1)
         {
-            Inventory[emptySlot] = data;
-            data.StackAmount = 1;
+            Inventory[emptySlot] = new InventoryItem_Stack(1, data);
+            UIManager.Update_Inventory(emptySlot, Inventory[emptySlot]);
             return true;
         }
 
@@ -200,8 +202,6 @@ public static class PlayerInteractionBase
                         ActiveObject = element;
                 }
             }
-
-            Debug.Log(ActiveObject.GetInstanceID());
             return ActiveObject.GetComponent<InteractionBase>();
         }
         else
@@ -209,4 +209,16 @@ public static class PlayerInteractionBase
             return null;
         }
     }
+}
+
+public class InventoryItem_Stack
+{
+    public InventoryItem_Stack(int _currentStack, Item_Data _data)
+    {
+        currentStack = _currentStack;
+        data = _data;
+    }
+
+    public int currentStack;
+    public Item_Data data;
 }

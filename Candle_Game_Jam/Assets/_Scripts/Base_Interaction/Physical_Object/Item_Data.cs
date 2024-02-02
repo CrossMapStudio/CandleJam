@@ -7,7 +7,7 @@ public class Item_Data : ScriptableObject
 {
     public string ID;
     public Sprite Inventory_ItemSprite;
-    public int StackAmount, StackCapacity;
+    public int StackCapacity;
 
 
     public GameObject SpawnObject;
@@ -16,3 +16,4 @@ public class Item_Data : ScriptableObject
     public float Food_Value;
     public float Thirst_Value;
 }
+

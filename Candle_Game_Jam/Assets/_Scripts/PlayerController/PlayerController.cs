@@ -158,10 +158,50 @@ public class Player_Movement : stateDriverInterface
     {
         Movement = Player_Input.Get_Movement().normalized;
 
+        /*
         CurrentAnimationSet = true ? Movement.magnitude != 0 : false;
+        
         if (StoredAnimationSet != CurrentAnimationSet)
             StoredAnimationSet = CurrentAnimationSet;
         PlayerController.Player_Animator.SetBool("Player_Moving", StoredAnimationSet);
+        */
+
+        if (Movement.x == 0 && Movement.y == 0)
+        {
+            PlayerController.Player_Animator.Play("Idle", 0);
+        }
+
+        if (Movement.x != 0 && Movement.y == 0)
+        {
+            PlayerController.Player_Animator.Play("SideRun", 0);
+        }
+
+        if (Movement.y != 0 && Movement.x == 0)
+        {
+            if (Movement.y > 0)
+            {
+                PlayerController.Player_Animator.Play("UpRun", 0);
+            }
+            else
+            {
+                PlayerController.Player_Animator.Play("DownRun", 0);
+            }
+        }
+
+        if (Movement.x != 0 && Movement.y != 0)
+        {
+            if (Movement.y > 0)
+            {
+                PlayerController.Player_Animator.Play("UpRunDiagonal", 0);
+            }
+            else
+            {
+                PlayerController.Player_Animator.Play("DownRunDiagonal", 0);
+            }
+        }
+
+
+
 
         if (Movement.x < 0)
         {

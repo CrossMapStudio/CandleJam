@@ -7,8 +7,6 @@ public class UIManager : MonoBehaviour
 {
     private static UIManager UI_Controller;
     [SerializeField] private Image UI_HungerBar, UI_ThirstBar;
-
-    //Write --
     [SerializeField] private List<UIInventoryItem> Inventory_Slots;
 
     private void Awake()

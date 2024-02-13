@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     // --- Game Pause State
     // --- Item Spawn
 
+    public static GameManager Manager;
     public static List<StatisticManager> Statistic_Managers;
 
     public float HungerTick_Target;
@@ -21,9 +22,20 @@ public class GameManager : MonoBehaviour
     private float DarknessTick_Current;
     private float HealthTick_Current;
 
+    #region Inventory Lists
+    //Weapons, Armor, Accessories, Materials --- Eventually
+    public Player_Inventory Consumable_Inventory;
+    private Dictionary<string, Player_Inventory> Inventory_Map;
+    #endregion
+
     public void Awake()
     {
+        Manager = this;
         Statistic_Managers = new List<StatisticManager>();
+        Inventory_Map = new Dictionary<string, Player_Inventory>();
+
+        //Just Consumable Now ---
+        Inventory_Map.Add(typeof(Consumable).Name, Consumable_Inventory);
     }
 
     public void Update()
@@ -46,7 +58,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("Game Paused");
     }
     // --- Handle Independent Stats --- Allows for Calling Static
-
+    #region Timers
     public void Darkness_Tick()
     {
         //Close to a Candle Check ---
@@ -90,4 +102,33 @@ public class GameManager : MonoBehaviour
     {
         //Hunger - Darkness - Thirst Based --- End Game Condition
     }
+    #endregion
+    #region Inventory
+    public static bool Add_Item(Item_Data _Data)
+    {
+        if (_Data.GetType() == typeof(Consumable))
+        {
+            if (Manager.Consumable_Inventory.Add_Item(_Data)) return true; else return false;
+        }
+
+        return false;
+    }
+    #endregion
+}
+
+public class Player_Stats
+{
+    //This will hold all the player stats and will be Referenced from the Game Manager ---
+}
+
+public class InventoryItem_Stack
+{
+    public InventoryItem_Stack(int _currentStack, Item_Data _data)
+    {
+        currentStack = _currentStack;
+        data = _data;
+    }
+
+    public int currentStack;
+    public Item_Data data;
 }

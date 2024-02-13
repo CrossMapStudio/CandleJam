@@ -65,8 +65,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0209aa7842cebdb4285d851c954fdf9d, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: c0c647d8a1b24bc49b999c2a62137c00, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -142,7 +142,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 0
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 472226a0d18a5da40b162ab283945994, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: bd9576553c89a8b4789248c6716cf722, type: 2}
   m_sharedMaterial: {fileID: -7891461468633827987, guid: 472226a0d18a5da40b162ab283945994, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -206,7 +206,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &4665677749175479147
@@ -344,6 +344,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 368a0986c6c79154fb69cd94bc218bde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Index: 0
   Inventory_Image: {fileID: 2971621862388859437}
   Inventory_Amount: {fileID: 9045419290750917592}

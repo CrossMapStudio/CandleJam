@@ -7,10 +7,7 @@ public class InteractionBase : MonoBehaviour
     public Physical_Object Pickup_Object { get; private set; }
     public enum ObjectType
     {
-        Inventory_Item,
-        Door,
-        Chest,
-        Button
+        Inventory_Item
     }
 
     public ObjectType Object_Type;
@@ -43,10 +40,9 @@ public class Inventory_Item_Pickup : Physical_Object
 
     public void On_Interact()
     {
-        if (PlayerController.Player_Controller.Add_Item(Base.ItemData))
+        if (GameManager.Add_Item(Base.ItemData))
         {
             GameObject.Destroy(Base.gameObject);
         }
-
     }
 }

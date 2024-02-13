@@ -22,9 +22,6 @@ public class PlayerController : MonoBehaviour
     public float Interaction_Distance;
     public LayerMask Interaction_Layer;
 
-    [Header("Inventory")]
-    InventoryItem_Stack[] Inventory;
-
     public void Awake()
     {
         Player_Controller = this;
@@ -36,8 +33,6 @@ public class PlayerController : MonoBehaviour
         Player_Renderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
         Player_Animator = transform.GetChild(0).GetComponent<Animator>();
         Player_Transform = transform;
-
-        Inventory = new InventoryItem_Stack[8];
     }
 
     public void Update()
@@ -59,51 +54,6 @@ public class PlayerController : MonoBehaviour
     public void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(transform.position, Interaction_Distance);
-    }
-
-    public bool Add_Item(Item_Data data)
-    {
-        int emptySlot = -1;
-        for(int i = 0; i < Inventory.Length; i++)
-        {
-            if (Inventory[i] == null) {
-                if (emptySlot == -1)
-                    emptySlot = i;
-                continue;
-            }
-
-            //Check if there is matching IDs --- If the Current Stack Amount of the Item is Less than the capacity, add to the number, else find another slot --- no slots available dont add the item return false ---
-            if (Inventory[i].data.ID == data.ID)
-            {
-                if (Inventory[i].currentStack < Inventory[i].data.StackCapacity)
-                {
-                    Inventory[i].currentStack++;
-                    UIManager.Update_Inventory(i, Inventory[i]);
-                    return true;
-                }
-                else
-                    continue;
-            }
-        }
-
-        if (emptySlot != -1)
-        {
-            Inventory[emptySlot] = new InventoryItem_Stack(1, data);
-            UIManager.Update_Inventory(emptySlot, Inventory[emptySlot]);
-            return true;
-        }
-
-        return false;
-    }
-
-    public void Drop_Item(int inventorySlot)
-    {
-
-    }
-
-    public void Drop_AllItem(int inventorySlot)
-    {
-
     }
 }
 
@@ -249,16 +199,4 @@ public static class PlayerInteractionBase
             return null;
         }
     }
-}
-
-public class InventoryItem_Stack
-{
-    public InventoryItem_Stack(int _currentStack, Item_Data _data)
-    {
-        currentStack = _currentStack;
-        data = _data;
-    }
-
-    public int currentStack;
-    public Item_Data data;
 }

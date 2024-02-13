@@ -5,9 +5,14 @@ using UnityEngine.UI;
 
 public class UIInventoryItem : MonoBehaviour
 {
-    [SerializeField] private int Index;
+    private int Index;
     [SerializeField] private Image Inventory_Image;
     [SerializeField] private TMPro.TMP_Text Inventory_Amount;
+
+    public void Awake()
+    {
+        Index = transform.parent.GetSiblingIndex();
+    }
 
     public void Inventory_Update(InventoryItem_Stack Stack)
     {

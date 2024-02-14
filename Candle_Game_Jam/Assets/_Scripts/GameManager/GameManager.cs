@@ -24,18 +24,27 @@ public class GameManager : MonoBehaviour
 
     #region Inventory Lists
     //Weapons, Armor, Accessories, Materials --- Eventually
-    public Player_Inventory Consumable_Inventory;
-    private Dictionary<string, Player_Inventory> Inventory_Map;
+    private List<Inventory_Collection> Inventory_Collections;
+    public List<Inventory_Collection> Get_Inventory_Collection => Inventory_Collections;
+
+    public Inventory_Collection Weapon_Inventory;
+    public Inventory_Collection Armor_Inventory;
+    public Inventory_Collection Accessory_Inventory;
+    public Inventory_Collection Consumable_Inventory;
+    public Inventory_Collection Material_Inventory;
     #endregion
 
     public void Awake()
     {
         Manager = this;
         Statistic_Managers = new List<StatisticManager>();
-        Inventory_Map = new Dictionary<string, Player_Inventory>();
 
-        //Just Consumable Now ---
-        Inventory_Map.Add(typeof(Consumable).Name, Consumable_Inventory);
+        Inventory_Collections = new List<Inventory_Collection>();
+        Inventory_Collections.Add(Weapon_Inventory); //Index 0
+        Inventory_Collections.Add(Armor_Inventory); //Index 1
+        Inventory_Collections.Add(Accessory_Inventory); //Index 2
+        Inventory_Collections.Add(Consumable_Inventory); //Index 3
+        Inventory_Collections.Add(Material_Inventory); //Index 4
     }
 
     public void Update()

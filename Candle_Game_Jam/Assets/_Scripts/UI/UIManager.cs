@@ -38,7 +38,10 @@ public class UIManager : MonoBehaviour
             Inventory.SetActive(!Inventory.activeSelf);
 
             if (Inventory.activeSelf)
+            {
                 CameraController.Controller.ChangeCameraTargets(1f, new Vector3(1f, 0, 0));
+                Change_Inventory(0);
+            }
             else
                 CameraController.Controller.ResetCameraTargets();
         }
@@ -57,6 +60,16 @@ public class UIManager : MonoBehaviour
     public static void Update_Inventory(int index, InventoryItem_Stack Stack)
     {
         UI_Controller.UI_Inventory[index].Inventory_Update(Stack);
+    }
+
+    public void Change_Inventory(int index)
+    {
+        var Collection = GameManager.Manager.Get_Inventory_Collection[index];
+
+        for (int i = 0; i < Collection.GetInventory_Data.Length; i++)
+        {
+            UI_Controller.UI_Inventory[i].Inventory_Update(Collection.GetInventory_Data[i]);
+        }
     }
 
     public void Section_Switch(int Menu_ToggleValue)

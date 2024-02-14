@@ -10,13 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 0}
-  m_Name: Small Healing Potion
+  m_Name: Heal
   m_EditorClassIdentifier: Assembly-CSharp::Consumable
-  ID: small_healing_potion
+  ID: healing_potion1
   Inventory_ItemSprite: {fileID: 21300000, guid: 28e8ff9bb0dbf0149aa8392d076d155d, type: 3}
   StackCapacity: 3
   SpawnObject: {fileID: 0}
-  Item_Name: Small Healing Vial
-  Item_UseCase: Used to Restore a Small Amount of Vitality
-  Item_Description: Created within the dungeon by an unknown alchemist, these potions
-    where scattered amongst the darkness to help travellers on their passage through.
+  Item_Name: Vial of Elixir
+  Item_UseCase: Use this item to restore health.
+  Item_Description: Creating from the blood of fallen heros, this elixir...

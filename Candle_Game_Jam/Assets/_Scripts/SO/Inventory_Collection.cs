@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Player Inventory", menuName = "ScriptableObjects/Player Inventory")]
-public class Player_Inventory : ScriptableObject
+public class Inventory_Collection : ScriptableObject
 {
     private InventoryItem_Stack[] Inventory_Data = new InventoryItem_Stack[50];
     public InventoryItem_Stack[] GetInventory_Data => Inventory_Data;

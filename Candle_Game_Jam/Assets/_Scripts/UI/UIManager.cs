@@ -1,12 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using UnityEngine.UI;
 using Cinemachine;
 
 public class UIManager : MonoBehaviour
 {
-    private static UIManager UI_Controller;
+    public static UIManager UI_Controller;
     [SerializeField] private Image UI_HungerBar, UI_ThirstBar;
 
     [Header("Menus")]
@@ -16,8 +18,19 @@ public class UIManager : MonoBehaviour
     [Header("Section 1 Toggle")]
     [SerializeField] private GameObject Eq_Menu, Inv_Menu;
 
+    //Current Menu is used to Save the Menu we are Currently Using
     [SerializeField] private Transform Inventory_Menu_Container;
     private List<UIInventoryItem> UI_Inventory;
+
+    //Allows us to pass the class ->
+    public Section_ItemDescription Item_Description_Section;
+
+    //Popup
+    #region Pop-Up UI
+    [SerializeField] private UIManagerAnimationTriggerCall CenterText_Container;
+    [SerializeField] private TMP_Text Center_Text;
+    public Action CenterTextCallBack;
+    #endregion
 
     private void Awake()
     {
@@ -39,11 +52,15 @@ public class UIManager : MonoBehaviour
 
             if (Inventory.activeSelf)
             {
-                CameraController.Controller.ChangeCameraTargets(1f, new Vector3(1f, 0, 0));
+                CameraController.Controller.ChangeCamera_Player(1f, new Vector3(1f, 0, 0));
                 Change_Inventory(0);
+                CursorController.Controller.GetCursorStateMachine.changeState(new Free_Cursor());
             }
             else
-                CameraController.Controller.ResetCameraTargets();
+            {
+                CameraController.Controller.ResetCamera_Player();
+                CursorController.Controller.GetCursorStateMachine.changeState(new Locked_Cursor());
+            }   
         }
     }
 
@@ -65,6 +82,7 @@ public class UIManager : MonoBehaviour
     public void Change_Inventory(int index)
     {
         var Collection = GameManager.Manager.Get_Inventory_Collection[index];
+        GameManager.Manager.Current_Menu = index;
 
         for (int i = 0; i < Collection.GetInventory_Data.Length; i++)
         {
@@ -88,4 +106,45 @@ public class UIManager : MonoBehaviour
                 return;
         }
     }
+
+
+    //Used for Regions - Achievements, Etc.
+    public void StartCenterText(string _text, Action _CenterTextCallBack)
+    {
+        Center_Text.text = _text;
+        CenterText_Container.gameObject.SetActive(true);
+        CenterText_Container.Get_SetTrigger = EndCenterText;
+        CenterTextCallBack = _CenterTextCallBack;
+    }
+
+    public void EndCenterText()
+    {
+        CenterText_Container.gameObject.SetActive(false);
+        CenterTextCallBack();
+    }
+}
+
+[System.Serializable]
+public class Section_ItemDescription
+{
+    //Section 2 --- Eventually Need the Crafted Weapon Slot Upgrades ---
+    [Header("Section 2 - UI Elements")]
+    [SerializeField] private TMP_Text Item_Title;
+    public TMP_Text Get_ItemTitle => Item_Title;
+
+
+    [SerializeField] private TMP_Text Item_Level;
+    public TMP_Text Get_ItemLevel => Item_Level;
+
+
+    [SerializeField] private TMP_Text Item_UseDescription;
+    public TMP_Text Get_UseDescription => Item_UseDescription;
+
+
+    [SerializeField] private TMP_Text Item_LoreDescription;
+    public TMP_Text Get_ItemLoreDescription => Item_LoreDescription;
+
+
+    [SerializeField] private Image Item_LargeImage;
+    public Image Get_ItemLargeImage => Item_LargeImage;
 }

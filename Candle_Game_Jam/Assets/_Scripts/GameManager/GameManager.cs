@@ -27,6 +27,9 @@ public class GameManager : MonoBehaviour
     private List<Inventory_Collection> Inventory_Collections;
     public List<Inventory_Collection> Get_Inventory_Collection => Inventory_Collections;
 
+    [HideInInspector]
+    public int Current_Menu;
+
     public Inventory_Collection Weapon_Inventory;
     public Inventory_Collection Armor_Inventory;
     public Inventory_Collection Accessory_Inventory;
@@ -120,7 +123,22 @@ public class GameManager : MonoBehaviour
             if (Manager.Consumable_Inventory.Add_Item(_Data)) return true; else return false;
         }
 
+        if (_Data.GetType() == typeof(Weapon))
+        {
+            if (Manager.Weapon_Inventory.Add_Item(_Data)) return true; else return false;
+        }
         return false;
+    }
+
+    public static void Swap_Item(int indexSelected, int indexSwap)
+    {
+        InventoryItem_Stack Temporary_StackData;
+        Temporary_StackData = Manager.Get_Inventory_Collection[Manager.Current_Menu].GetInventory_Data[indexSwap];
+        Manager.Get_Inventory_Collection[Manager.Current_Menu].GetInventory_Data[indexSwap] = Manager.Get_Inventory_Collection[Manager.Current_Menu].GetInventory_Data[indexSelected];
+        Manager.Get_Inventory_Collection[Manager.Current_Menu].GetInventory_Data[indexSelected] = Temporary_StackData;
+
+        UIManager.Update_Inventory(indexSelected, Manager.Get_Inventory_Collection[Manager.Current_Menu].GetInventory_Data[indexSelected]);
+        UIManager.Update_Inventory(indexSwap, Manager.Get_Inventory_Collection[Manager.Current_Menu].GetInventory_Data[indexSwap]);
     }
     #endregion
 }

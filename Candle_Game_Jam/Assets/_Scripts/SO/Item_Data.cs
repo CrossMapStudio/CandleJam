@@ -30,11 +30,16 @@ public abstract class Item_Data : ScriptableObject
 
     public abstract void OnDeploy();
     public abstract void OnUse();
+    public abstract void UpdateUI();
 }
 
+/*
 [CreateAssetMenu(fileName = "Item Weapon", menuName = "ScriptableObjects/Item Weapon")]
 public class Weapon : Item_Data
 {
+    private int Level = 1;
+    public int GetWeaponLevel => Level;
+
     public override void OnDeploy()
     {
 
@@ -42,6 +47,15 @@ public class Weapon : Item_Data
     public override void OnUse()
     {
 
+    }
+
+    public override void UpdateUI()
+    {
+        UIManager.UI_Controller.Item_Description_Section.Get_ItemTitle.text = Item_Name;
+        UIManager.UI_Controller.Item_Description_Section.Get_UseDescription.text = Item_UseCase;
+        UIManager.UI_Controller.Item_Description_Section.Get_ItemLevel.text = "Lvl. " + GetWeaponLevel.ToString();
+        UIManager.UI_Controller.Item_Description_Section.Get_ItemLoreDescription.text = Item_Description;
+        UIManager.UI_Controller.Item_Description_Section.Get_ItemLargeImage.sprite = Inventory_ItemSprite;
     }
 }
 
@@ -56,6 +70,11 @@ public class Armor : Item_Data
     {
 
     }
+
+    public override void UpdateUI()
+    {
+        throw new System.NotImplementedException();
+    }
 }
 
 [CreateAssetMenu(fileName = "Item Accessory", menuName = "ScriptableObjects/Item Accessory")]
@@ -68,6 +87,11 @@ public class Accesory : Item_Data
     public override void OnUse()
     {
 
+    }
+
+    public override void UpdateUI()
+    {
+        throw new System.NotImplementedException();
     }
 }
 
@@ -83,10 +107,19 @@ public class Consumable : Item_Data
     {
 
     }
+
+    public override void UpdateUI()
+    {
+        UIManager.UI_Controller.Item_Description_Section.Get_ItemTitle.text = Item_Name;
+        UIManager.UI_Controller.Item_Description_Section.Get_UseDescription.text = Item_UseCase;
+        UIManager.UI_Controller.Item_Description_Section.Get_ItemLevel.text = "---";
+        UIManager.UI_Controller.Item_Description_Section.Get_ItemLoreDescription.text = Item_Description;
+        UIManager.UI_Controller.Item_Description_Section.Get_ItemLargeImage.sprite = Inventory_ItemSprite;
+    }
 }
 
 [CreateAssetMenu(fileName = "Item Material", menuName = "ScriptableObjects/Item Material")]
-public class Crafting_Material : Item_Data
+public class CraftingMaterial : Item_Data
 {
     public override void OnDeploy()
     {
@@ -96,5 +129,12 @@ public class Crafting_Material : Item_Data
     {
 
     }
+
+    public override void UpdateUI()
+    {
+        throw new System.NotImplementedException();
+    }
 }
+
+*/
 

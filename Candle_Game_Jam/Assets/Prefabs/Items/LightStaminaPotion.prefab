@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 4268861931212338629}
   - component: {fileID: 897426384777156402}
   m_Layer: 6
-  m_Name: LightHealthPotion
+  m_Name: LightStaminaPotion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -158,7 +158,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 30
-  m_Sprite: {fileID: 21300000, guid: a83fadb151f5cc84abe8d9fdb4e00fc9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f17fb949813e0d040a2fe2745602f991, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -227,4 +227,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Object_Type: 0
-  ItemData: {fileID: 11400000, guid: c8579cc594c80114684e74f62282cc8a, type: 2}
+  ItemData: {fileID: 11400000, guid: 95150231f66f8d444bb269575a0ee7fb, type: 2}

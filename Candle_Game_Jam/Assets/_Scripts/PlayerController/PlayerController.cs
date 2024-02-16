@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     public static Animator Player_Animator;
 
     StateMachine Player_StateMachine;
+    public StateMachine Get_PlayerStateMachine => Player_StateMachine;
 
     [HideInInspector]
     public InteractionBase Interactable_Object;
@@ -169,6 +170,40 @@ public class Player_Movement : stateDriverInterface
                 PlayerController.Player_Controller.Interactable_Object.Pickup_Object.On_Interact();
             }
         }
+    }
+}
+public class Player_Hold : stateDriverInterface
+{
+    public string ID => "Player_Hold";
+
+    public void onEnter()
+    {
+
+    }
+
+    public void onExit()
+    {
+
+    }
+
+    public void onFixedUpdate()
+    {
+
+    }
+
+    public void onGUI()
+    {
+
+    }
+
+    public void onLateUpdate()
+    {
+
+    }
+
+    public void onUpdate()
+    {
+
     }
 }
 #endregion

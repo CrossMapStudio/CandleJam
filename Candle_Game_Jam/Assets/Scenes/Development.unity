@@ -15432,30 +15432,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 28865237834281313, guid: 92242e7c495e4984aa4a736dd4bacdfa, type: 3}
-      propertyPath: m_Size.x
-      value: 0.11577797
-      objectReference: {fileID: 0}
-    - target: {fileID: 28865237834281313, guid: 92242e7c495e4984aa4a736dd4bacdfa, type: 3}
-      propertyPath: m_Size.y
-      value: 0.158037
-      objectReference: {fileID: 0}
-    - target: {fileID: 28865237834281313, guid: 92242e7c495e4984aa4a736dd4bacdfa, type: 3}
-      propertyPath: m_Offset.x
-      value: -0.0040055513
-      objectReference: {fileID: 0}
-    - target: {fileID: 28865237834281313, guid: 92242e7c495e4984aa4a736dd4bacdfa, type: 3}
-      propertyPath: m_Offset.y
-      value: -0.14257234
-      objectReference: {fileID: 0}
-    - target: {fileID: 4340855714868838903, guid: 92242e7c495e4984aa4a736dd4bacdfa, type: 3}
-      propertyPath: m_SortingOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4340855714868838903, guid: 92242e7c495e4984aa4a736dd4bacdfa, type: 3}
-      propertyPath: m_SpriteSortPoint
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7001189520197537867, guid: 92242e7c495e4984aa4a736dd4bacdfa, type: 3}
       propertyPath: m_Name
       value: Player_Controller

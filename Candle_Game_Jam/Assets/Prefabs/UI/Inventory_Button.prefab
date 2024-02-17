@@ -126,10 +126,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 368a0986c6c79154fb69cd94bc218bde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Index: 0
   Empty_Sprite: {fileID: 21300000, guid: 6b0161e21a59dc14e96feff1ada41989, type: 3}
   Inventory_Image: {fileID: 7899282009638838328}
   Inventory_Amount: {fileID: 112685851337635801}
-  Button_Component: {fileID: 0}
 --- !u!114 &5587326947351839637
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -402,7 +402,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3882353, g: 0.7764706, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -435,7 +435,7 @@ MonoBehaviour:
   imageObject: {fileID: 7899282009638838328}
   keepAlphaValue: 0
   useCustomColor: 0
-  colorType: 0
+  colorType: 1
 --- !u!1 &8299170071763260097
 GameObject:
   m_ObjectHideFlags: 0
@@ -495,7 +495,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3882353, g: 0.7764706, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -528,4 +528,4 @@ MonoBehaviour:
   imageObject: {fileID: 7752004429087406976}
   keepAlphaValue: 0
   useCustomColor: 0
-  colorType: 0
+  colorType: 1

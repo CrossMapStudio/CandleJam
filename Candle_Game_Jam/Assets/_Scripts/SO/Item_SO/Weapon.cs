@@ -6,6 +6,8 @@ using UnityEngine;
 public class Weapon : Item_Data
 {
     private int Level = 1;
+    [SerializeField] private Material Weapon_Mat;
+
     public int GetWeaponLevel => Level;
 
     public override void OnDeploy()
@@ -24,5 +26,6 @@ public class Weapon : Item_Data
         UIManager.UI_Controller.Item_Description_Section.Get_ItemLevel.text = "Lvl. " + GetWeaponLevel.ToString();
         UIManager.UI_Controller.Item_Description_Section.Get_ItemLoreDescription.text = Item_Description;
         UIManager.UI_Controller.Item_Description_Section.Get_ItemLargeImage.sprite = Inventory_ItemSprite;
+        UIManager.UI_Controller.Item_Description_Section.Get_ItemLargeImage.material = Weapon_Mat;
     }
 }

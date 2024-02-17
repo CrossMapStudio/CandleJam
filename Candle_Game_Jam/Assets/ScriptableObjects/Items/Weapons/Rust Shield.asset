@@ -19,3 +19,4 @@ MonoBehaviour:
   Item_Name: Broken Shield
   Item_UseCase: A defensive item used for blocking incoming attacks.
   Item_Description: 'A broken shield left from the previous soul. '
+  Weapon_Mat: {fileID: 2100000, guid: cdd9a9b2aef8d824883df048ac6eb990, type: 2}

@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Rust Sword
   m_EditorClassIdentifier: 
   ID: broken_sword
-  Inventory_ItemSprite: {fileID: 21300000, guid: caf198b09b398f844a03233eae5ca9e5, type: 3}
+  Inventory_ItemSprite: {fileID: 21300000, guid: 8a4b275b54dc05e4b93d0199264d8ddf, type: 3}
   StackCapacity: 1
   SpawnObject: {fileID: 0}
   Item_Name: Broken Sword
   Item_UseCase: Used within the weapon slot.
   Item_Description: A broken short sword left by the previous owner.
+  Weapon_Mat: {fileID: 2100000, guid: cdd9a9b2aef8d824883df048ac6eb990, type: 2}

@@ -8,6 +8,8 @@ public class CameraController : MonoBehaviour
     public static CameraController Controller;
 
     CinemachineVirtualCamera VC_Camera;
+    CinemachineVirtualCamera VC_ActiveCamera;
+
     private float Camera_TargetOrthoSize;
     private Vector3 Camera_TargetOffsetFollow;
 
@@ -55,22 +57,24 @@ public class CameraController : MonoBehaviour
         Camera_TargetOffsetFollow = offset + CameraOffsetFollow_Stored;
     }
 
-    public void ChangeCamera_Target_WithPlayerHold(Transform _Target, float ortho_target, Vector3 offset, string UI_Call)
+    public void ChangeCamera_Target_WithPlayerHold(CinemachineVirtualCamera _Camera, string Text)
     {
-        VC_Camera.m_Follow = _Target;
-        Camera_TargetOrthoSize = ortho_target;
-        Camera_TargetOffsetFollow = offset;
-
-        UIManager.UI_Controller.StartCenterText(UI_Call, ResetCamera_Player_Hold);
+        UIManager.UI_Controller.StartCenterText(Text, ResetCamera_Player_Hold);
         PlayerController.Player_Controller.Get_PlayerStateMachine.changeState(new Player_Hold());
+
+        VC_ActiveCamera = _Camera;
+
+        VC_Camera.Priority = 0;
+        VC_ActiveCamera.Priority = 10;
     }
 
     public void ResetCamera_Player_Hold()
     {
         VC_Camera.m_Follow = GameObject.FindGameObjectWithTag("Player").transform;
-        Camera_TargetOrthoSize = CameraOrthoSize_Stored;
-        Camera_TargetOffsetFollow = CameraOffsetFollow_Stored;
         PlayerController.Player_Controller.Get_PlayerStateMachine.changeState(new Player_Movement());
+
+        VC_Camera.Priority = 10;
+        VC_ActiveCamera.Priority = 0;
     }
 
 }

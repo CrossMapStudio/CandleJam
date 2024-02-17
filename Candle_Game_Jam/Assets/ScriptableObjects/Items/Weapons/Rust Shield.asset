@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a18ac12018b1af84baf814cf805778f3, type: 3}
+  m_Name: Rust Shield
+  m_EditorClassIdentifier: 
+  ID: broken_shield
+  Inventory_ItemSprite: {fileID: 21300000, guid: c04834557ad45a84a9bc91f9eeca39ec, type: 3}
+  StackCapacity: 1
+  SpawnObject: {fileID: 0}
+  Item_Name: Broken Shield
+  Item_UseCase: A defensive item used for blocking incoming attacks.
+  Item_Description: 'A broken shield left from the previous soul. '

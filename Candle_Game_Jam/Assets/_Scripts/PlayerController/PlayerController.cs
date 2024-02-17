@@ -178,7 +178,7 @@ public class Player_Hold : stateDriverInterface
 
     public void onEnter()
     {
-
+        PlayerController.Player_Animator.Play("Idle", 0);
     }
 
     public void onExit()

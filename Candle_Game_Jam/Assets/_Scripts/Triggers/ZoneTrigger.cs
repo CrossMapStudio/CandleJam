@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class ZoneTrigger : MonoBehaviour
 {
-    [SerializeField] private Transform Camera_Target;
-    [SerializeField] private float Ortho_Size;
-    [SerializeField] private Vector3 Camera_Offset;
+    [SerializeField] private Cinemachine.CinemachineVirtualCamera VC_Camera;
     [SerializeField] private string Zone_Text;
 
     private bool Zone_Triggered;
@@ -14,7 +12,7 @@ public class ZoneTrigger : MonoBehaviour
     public void OnTriggerEnter2D(Collider2D collision)
     {
         if (!Zone_Triggered)
-            CameraController.Controller.ChangeCamera_Target_WithPlayerHold(Camera_Target, Ortho_Size, Camera_Offset, Zone_Text);
+            CameraController.Controller.ChangeCamera_Target_WithPlayerHold(VC_Camera, Zone_Text);
 
         Zone_Triggered = true;
     }

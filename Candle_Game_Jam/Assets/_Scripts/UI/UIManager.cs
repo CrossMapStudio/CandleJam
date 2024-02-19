@@ -32,6 +32,9 @@ public class UIManager : MonoBehaviour
     [Header("Section 1 Toggle")]
     [SerializeField] private GameObject Eq_Menu, Inv_Menu;
 
+    //Used for Portraying Slot Weapon
+    public Image WeaponEquipSlotMain;
+
 
     //Current Menu is used to Save the Menu we are Currently Using
     [SerializeField] private Transform Inventory_Menu_Container;
@@ -79,6 +82,7 @@ public class UIManager : MonoBehaviour
                 CameraController.Controller.ChangeCamera_Player(1f, new Vector3(1f, 0, 0));
                 Change_Inventory(0);
                 CursorController.Controller.GetCursorStateMachine.changeState(new Free_Cursor());
+                UI_StateMachine.changeState(new UI_Free());
             }
             else
             {
@@ -136,8 +140,7 @@ public class UIManager : MonoBehaviour
         Manager.UI_StateMachine.changeState(new UI_SelectingWeapons());
     }
 
-
-    //Used for Regions - Achievements, Etc.
+    //Used for Regions - Achievements, Etc. --- Break into a seperate state ---
     #region Page Display
     public void StartCenterText(string _text, Action _CenterTextCallBack)
     {
@@ -297,7 +300,11 @@ public class UI_SelectingWeapons : stateDriverInterface
         {
             EventTrigger.Entry OnButtonEquip = new EventTrigger.Entry();
             OnButtonEquip.eventID = EventTriggerType.PointerClick;
-            OnButtonEquip.callback.AddListener((CallBack) => { GameManager.Equip_Weapon(GameManager.Manager.Weapon_Inventory.GetInventory_Data[element.Index].data); });
+
+            if (GameManager.Manager.Weapon_Inventory.GetInventory_Data[element.Index] != null)
+                OnButtonEquip.callback.AddListener((CallBack) => { GameManager.Equip_Weapon(GameManager.Manager.Weapon_Inventory.GetInventory_Data[element.Index].data); });
+            else
+                OnButtonEquip.callback.AddListener((CallBack) => { GameManager.Equip_Weapon(null); });
 
             element.Get_Trigger.triggers.Add(OnButtonEquip);
         }

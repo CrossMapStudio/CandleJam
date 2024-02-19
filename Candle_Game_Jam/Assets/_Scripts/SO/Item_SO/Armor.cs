@@ -12,7 +12,7 @@ public class Armor : Item_Data
         return Clone;
     }
 
-    public override void OnEquip()
+    public override void OnEquip(int index = 0)
     {
 
     }

@@ -28,7 +28,7 @@ public abstract class Item_Data : ScriptableObject
     [TextArea(5, 8)]
     public string Item_Description;
 
-    public abstract void OnEquip();
+    public abstract void OnEquip(int index = 0);
     public abstract void OnUse();
     public abstract void UpdateUI();
     public abstract Item_Data CreateInstance();

@@ -20,4 +20,4 @@ MonoBehaviour:
   Item_UseCase: Used within the weapon slot.
   Item_Description: A broken short sword left by the previous owner.
   Weapon_Mat: {fileID: 2100000, guid: cdd9a9b2aef8d824883df048ac6eb990, type: 2}
-  Weapon_Controller: {fileID: 4136317537579442587, guid: 1382cffdd53419648abaf96af6957b54, type: 3}
+  RunTimeAnim_WeaponController: {fileID: 9100000, guid: 0fd48db5e02e5684f872efceac28cd63, type: 2}

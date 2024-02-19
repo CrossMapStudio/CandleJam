@@ -153,8 +153,11 @@ public class GameManager : MonoBehaviour
     #region Equipment
     public static void Equip_Weapon(Item_Data data)
     {
-        Manager.Equipment_Collections[0].Add_Item(data); //Update UI ---
-        data.OnEquip();
+        if (data != null)
+        {
+            Manager.Equipment_Collections[0].Add_Item(data); //Update UI ---
+            data.OnEquip();
+        }
 
         UIManager.Manager.Get_UIMachine.changeState(new UI_Free());
     }

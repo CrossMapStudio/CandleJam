@@ -9,8 +9,9 @@ public class Weapon : Item_Data
     [SerializeField] private Material Weapon_Mat;
     public int GetWeaponLevel => Level;
 
-    [SerializeField] private WeaponController Weapon_Controller;
-    public WeaponController Get_WeaponController => Weapon_Controller;
+    //Used for the Weapon Controller ->
+    public RuntimeAnimatorController RunTimeAnim_WeaponController;
+    //Animation Corresponding to Keys ->
 
     public override Item_Data CreateInstance()
     {
@@ -19,16 +20,15 @@ public class Weapon : Item_Data
         return Clone;
     }
 
-    public override void OnEquip()
+    public override void OnEquip(int index = 0)
     {
         //Update UI
         //Store in the Inventory Slot
         //Spawn the Weapon Controller ---
         //Awake of Weapon Controller -> Set SO
         //Connect to the player controller -> Animations ->
-        if (Weapon_Controller != null)
-            GameObject.Instantiate(Weapon_Controller.gameObject, PlayerController.Player_Controller.transform.position, Quaternion.identity, PlayerController.Player_Controller.transform);
-
+        PlayerController.Player_Controller.Get_WeaponController[index].Set_WeaponProperties(Weapon_Mat, RunTimeAnim_WeaponController);
+        UIManager.Manager.WeaponEquipSlotMain.sprite = Inventory_ItemSprite;
         return;
     }
 

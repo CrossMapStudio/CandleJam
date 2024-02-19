@@ -41,7 +41,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 8a4b275b54dc05e4b93d0199264d8ddf, type: 3}
+        m_Texture: {fileID: 2800000, guid: 958ab8d1783e24641bbffc4ff35ff79c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskTex:
@@ -67,6 +67,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _EnableExternalAlpha: 0
+    - _PixelAmount: 64
     m_Colors:
     - _BladeBase: {r: 0.5471698, g: 0.5471698, b: 0.5471698, a: 1}
     - _BladeColor: {r: 0.7169812, g: 0.7169812, b: 0.7169812, a: 1}

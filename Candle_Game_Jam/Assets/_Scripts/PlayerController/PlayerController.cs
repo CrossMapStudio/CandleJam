@@ -23,6 +23,10 @@ public class PlayerController : MonoBehaviour
     public float Interaction_Distance;
     public LayerMask Interaction_Layer;
 
+    //On Player Equippable Containers
+    [SerializeField] private List<WeaponController> Weapon_Controllers;
+    public List<WeaponController> Get_WeaponController => Weapon_Controllers;
+
     public void Awake()
     {
         Player_Controller = this;
@@ -120,11 +124,19 @@ public class Player_Movement : stateDriverInterface
         if (Movement.x == 0 && Movement.y == 0)
         {
             PlayerController.Player_Animator.Play("Idle", 0);
+            if (PlayerController.Player_Controller.Get_WeaponController[0].GetWeaponAnimator.runtimeAnimatorController != null)
+            {
+                PlayerController.Player_Controller.Get_WeaponController[0].GetWeaponAnimator.Play("idle");
+            }
         }
 
         if (Movement.x != 0 && Movement.y == 0)
         {
             PlayerController.Player_Animator.Play("SideRun", 0);
+            if (PlayerController.Player_Controller.Get_WeaponController[0].GetWeaponAnimator.runtimeAnimatorController != null)
+            {
+                PlayerController.Player_Controller.Get_WeaponController[0].GetWeaponAnimator.Play("side");
+            }
         }
 
         if (Movement.y != 0 && Movement.x == 0)
@@ -132,10 +144,18 @@ public class Player_Movement : stateDriverInterface
             if (Movement.y > 0)
             {
                 PlayerController.Player_Animator.Play("UpRun", 0);
+                if (PlayerController.Player_Controller.Get_WeaponController[0].GetWeaponAnimator.runtimeAnimatorController != null)
+                {
+                    PlayerController.Player_Controller.Get_WeaponController[0].GetWeaponAnimator.Play("up");
+                }
             }
             else
             {
                 PlayerController.Player_Animator.Play("DownRun", 0);
+                if (PlayerController.Player_Controller.Get_WeaponController[0].GetWeaponAnimator.runtimeAnimatorController != null)
+                {
+                    PlayerController.Player_Controller.Get_WeaponController[0].GetWeaponAnimator.Play("down");
+                }
             }
         }
 
@@ -144,10 +164,18 @@ public class Player_Movement : stateDriverInterface
             if (Movement.y > 0)
             {
                 PlayerController.Player_Animator.Play("UpRunDiagonal", 0);
+                if (PlayerController.Player_Controller.Get_WeaponController[0].GetWeaponAnimator.runtimeAnimatorController != null)
+                {
+                    PlayerController.Player_Controller.Get_WeaponController[0].GetWeaponAnimator.Play("upSide");
+                }
             }
             else
             {
                 PlayerController.Player_Animator.Play("DownRunDiagonal", 0);
+                if (PlayerController.Player_Controller.Get_WeaponController[0].GetWeaponAnimator.runtimeAnimatorController != null)
+                {
+                    PlayerController.Player_Controller.Get_WeaponController[0].GetWeaponAnimator.Play("downSide");
+                }
             }
         }
 
@@ -157,10 +185,18 @@ public class Player_Movement : stateDriverInterface
         if (Movement.x < 0)
         {
             PlayerController.Player_Renderer.flipX = true;
+            if (PlayerController.Player_Controller.Get_WeaponController[0].GetWeaponAnimator.runtimeAnimatorController != null)
+            {
+                PlayerController.Player_Controller.Get_WeaponController[0].Renderer.flipX = true;
+            }
         }
         else if (Movement.x > 0)
         {
             PlayerController.Player_Renderer.flipX = false;
+            if (PlayerController.Player_Controller.Get_WeaponController[0].GetWeaponAnimator.runtimeAnimatorController != null)
+            {
+                PlayerController.Player_Controller.Get_WeaponController[0].Renderer.flipX = false;
+            }
         }
 
         if (Player_Input.Get_Interact())

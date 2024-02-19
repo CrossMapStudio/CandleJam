@@ -13,7 +13,7 @@ public class Consumable : Item_Data
     }
 
     //Values to be used in Inventory Use Selection
-    public override void OnEquip()
+    public override void OnEquip(int index = 0)
     {
 
     }

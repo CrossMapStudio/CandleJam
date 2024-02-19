@@ -12,9 +12,14 @@ public class UIInventoryItem : MonoBehaviour
     [SerializeField] private TMPro.TMP_Text Inventory_Amount;
     private InventoryItem_Stack CurrentStack;
 
+    //Used for the Button on Different Behaviors ---
+    private EventTrigger Trigger;
+    public EventTrigger Get_Trigger => Trigger;
+
     public void Awake()
     {
         Index = transform.GetSiblingIndex();
+        Trigger = GetComponent<EventTrigger>();
     }
 
     public void Inventory_Update(InventoryItem_Stack Stack)
@@ -49,11 +54,11 @@ public class UIInventoryItem : MonoBehaviour
             }
             else
             {
-                UIManager.UI_Controller.Item_Description_Section.Get_ItemTitle.text = "Empty Inventory Slot";
-                UIManager.UI_Controller.Item_Description_Section.Get_UseDescription.text = "Used for storing various items found within the dungeon.";
-                UIManager.UI_Controller.Item_Description_Section.Get_ItemLevel.text = "---";
-                UIManager.UI_Controller.Item_Description_Section.Get_ItemLoreDescription.text = "---";
-                UIManager.UI_Controller.Item_Description_Section.Get_ItemLargeImage.sprite = Empty_Sprite;
+                UIManager.Manager.Item_Description_Section.Get_ItemTitle.text = "Empty Inventory Slot";
+                UIManager.Manager.Item_Description_Section.Get_UseDescription.text = "Used for storing various items found within the dungeon.";
+                UIManager.Manager.Item_Description_Section.Get_ItemLevel.text = "---";
+                UIManager.Manager.Item_Description_Section.Get_ItemLoreDescription.text = "---";
+                UIManager.Manager.Item_Description_Section.Get_ItemLargeImage.sprite = Empty_Sprite;
             }
         }
     }

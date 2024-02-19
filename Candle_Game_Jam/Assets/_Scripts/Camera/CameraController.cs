@@ -59,7 +59,7 @@ public class CameraController : MonoBehaviour
 
     public void ChangeCamera_Target_WithPlayerHold(CinemachineVirtualCamera _Camera, string Text)
     {
-        UIManager.UI_Controller.StartCenterText(Text, ResetCamera_Player_Hold);
+        UIManager.Manager.StartCenterText(Text, ResetCamera_Player_Hold);
         PlayerController.Player_Controller.Get_PlayerStateMachine.changeState(new Player_Hold());
 
         VC_ActiveCamera = _Camera;

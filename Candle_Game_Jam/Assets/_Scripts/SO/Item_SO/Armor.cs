@@ -5,7 +5,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Item Armor", menuName = "ScriptableObjects/Item Armor")]
 public class Armor : Item_Data
 {
-    public override void OnDeploy()
+    public override Item_Data CreateInstance()
+    {
+        Armor Clone = new Armor();
+        Clone = this;
+        return Clone;
+    }
+
+    public override void OnEquip()
     {
 
     }

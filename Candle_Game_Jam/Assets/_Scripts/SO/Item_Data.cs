@@ -15,7 +15,7 @@ public abstract class Item_Data : ScriptableObject
     public int StackCapacity;
 
     //All Items Need Spawn Object for "Dropping"
-    public GameObject SpawnObject;
+    public GameObject DropItem;
 
     //All Items need a Title
     public string Item_Name;
@@ -28,8 +28,9 @@ public abstract class Item_Data : ScriptableObject
     [TextArea(5, 8)]
     public string Item_Description;
 
-    public abstract void OnDeploy();
+    public abstract void OnEquip();
     public abstract void OnUse();
     public abstract void UpdateUI();
+    public abstract Item_Data CreateInstance();
 }
 

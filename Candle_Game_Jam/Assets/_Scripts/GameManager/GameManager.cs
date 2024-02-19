@@ -27,6 +27,9 @@ public class GameManager : MonoBehaviour
     private List<Inventory_Collection> Inventory_Collections;
     public List<Inventory_Collection> Get_Inventory_Collection => Inventory_Collections;
 
+    private List<Inventory_Collection> Equipment_Collections;
+    public List<Inventory_Collection> Get_Equipment_Collection => Equipment_Collections;
+
     [HideInInspector]
     public int Current_Menu;
 
@@ -35,6 +38,9 @@ public class GameManager : MonoBehaviour
     public Inventory_Collection Accessory_Inventory;
     public Inventory_Collection Consumable_Inventory;
     public Inventory_Collection Material_Inventory;
+
+    [Header("Equipment Inventory")] //Size of 2
+    public Inventory_Collection Weapon_Equipment;
     #endregion
 
     public void Awake()
@@ -48,6 +54,9 @@ public class GameManager : MonoBehaviour
         Inventory_Collections.Add(Accessory_Inventory); //Index 2
         Inventory_Collections.Add(Consumable_Inventory); //Index 3
         Inventory_Collections.Add(Material_Inventory); //Index 4
+
+        Equipment_Collections = new List<Inventory_Collection>();
+        Equipment_Collections.Add(Weapon_Equipment);
     }
 
     public void Update()
@@ -140,6 +149,16 @@ public class GameManager : MonoBehaviour
         UIManager.Update_Inventory(indexSelected, Manager.Get_Inventory_Collection[Manager.Current_Menu].GetInventory_Data[indexSelected]);
         UIManager.Update_Inventory(indexSwap, Manager.Get_Inventory_Collection[Manager.Current_Menu].GetInventory_Data[indexSwap]);
     }
+    #endregion
+    #region Equipment
+    public static void Equip_Weapon(Item_Data data)
+    {
+        Manager.Equipment_Collections[0].Add_Item(data); //Update UI ---
+        data.OnEquip();
+
+        UIManager.Manager.Get_UIMachine.changeState(new UI_Free());
+    }
+
     #endregion
 }
 

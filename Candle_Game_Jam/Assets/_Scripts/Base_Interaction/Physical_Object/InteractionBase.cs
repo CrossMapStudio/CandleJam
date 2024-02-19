@@ -40,7 +40,7 @@ public class Inventory_Item_Pickup : Physical_Object
 
     public void On_Interact()
     {
-        if (GameManager.Add_Item(Base.ItemData))
+        if (GameManager.Add_Item(Base.ItemData.CreateInstance()))
         {
             GameObject.Destroy(Base.gameObject);
         }

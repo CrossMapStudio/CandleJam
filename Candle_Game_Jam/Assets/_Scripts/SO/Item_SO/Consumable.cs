@@ -5,8 +5,15 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Item Consumable", menuName = "ScriptableObjects/Item Consumable")]
 public class Consumable : Item_Data
 {
+    public override Item_Data CreateInstance()
+    {
+        Consumable Clone = new Consumable();
+        Clone = this;
+        return Clone;
+    }
+
     //Values to be used in Inventory Use Selection
-    public override void OnDeploy()
+    public override void OnEquip()
     {
 
     }
@@ -17,10 +24,10 @@ public class Consumable : Item_Data
 
     public override void UpdateUI()
     {
-        UIManager.UI_Controller.Item_Description_Section.Get_ItemTitle.text = Item_Name;
-        UIManager.UI_Controller.Item_Description_Section.Get_UseDescription.text = Item_UseCase;
-        UIManager.UI_Controller.Item_Description_Section.Get_ItemLevel.text = "---";
-        UIManager.UI_Controller.Item_Description_Section.Get_ItemLoreDescription.text = Item_Description;
-        UIManager.UI_Controller.Item_Description_Section.Get_ItemLargeImage.sprite = Inventory_ItemSprite;
+        UIManager.Manager.Item_Description_Section.Get_ItemTitle.text = Item_Name;
+        UIManager.Manager.Item_Description_Section.Get_UseDescription.text = Item_UseCase;
+        UIManager.Manager.Item_Description_Section.Get_ItemLevel.text = "---";
+        UIManager.Manager.Item_Description_Section.Get_ItemLoreDescription.text = Item_Description;
+        UIManager.Manager.Item_Description_Section.Get_ItemLargeImage.sprite = Inventory_ItemSprite;
     }
 }

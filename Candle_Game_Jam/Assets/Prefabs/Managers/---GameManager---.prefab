@@ -55,6 +55,7 @@ MonoBehaviour:
   Accessory_Inventory: {fileID: 11400000, guid: 013a7286174a3cb41bfd212ee09ca17d, type: 2}
   Consumable_Inventory: {fileID: 11400000, guid: eb5d46e84e0101349aec30d3c8aa790f, type: 2}
   Material_Inventory: {fileID: 11400000, guid: 7b8f8d4b0cfac024d90fce392f218ec0, type: 2}
+  Weapon_Equipment: {fileID: 11400000, guid: 7cbfdb2679ac3814e877100675961aa4, type: 2}
 --- !u!114 &8532057226782741390
 MonoBehaviour:
   m_ObjectHideFlags: 0

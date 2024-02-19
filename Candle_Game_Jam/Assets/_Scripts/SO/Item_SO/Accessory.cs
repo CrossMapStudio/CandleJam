@@ -5,7 +5,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Item Accessory", menuName = "ScriptableObjects/Item Accessory")]
 public class Accesory : Item_Data
 {
-    public override void OnDeploy()
+    public override Item_Data CreateInstance()
+    {
+        Accesory Clone = new Accesory();
+        Clone = this;
+        return Clone;
+    }
+
+    public override void OnEquip()
     {
 
     }

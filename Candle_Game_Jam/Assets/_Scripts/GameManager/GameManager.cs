@@ -151,7 +151,7 @@ public class GameManager : MonoBehaviour
     }
     #endregion
     #region Equipment
-    public static void Equip_Weapon(Item_Data data)
+    public static void Equip_Weapon(Item_Data data, int Index)
     {
         if (data != null)
         {

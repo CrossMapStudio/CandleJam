@@ -26,13 +26,15 @@ public class UIInventoryItem : MonoBehaviour
     {
         if (Stack == null)
         {
-            Inventory_Amount.text = "0";
+            if (Inventory_Amount)
+                Inventory_Amount.text = "0";
             Inventory_Image.sprite = Empty_Sprite;
             CurrentStack = null;
         }
         else
         {
-            Inventory_Amount.text = Stack.currentStack.ToString();
+            if (Inventory_Amount)
+                Inventory_Amount.text = Stack.currentStack.ToString();
             Inventory_Image.sprite = Stack.data.Inventory_ItemSprite;
             CurrentStack = Stack;
         }

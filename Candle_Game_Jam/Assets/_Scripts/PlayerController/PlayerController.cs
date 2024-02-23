@@ -29,11 +29,15 @@ public class PlayerController : MonoBehaviour
         Player_RigidBody = GetComponent<Rigidbody2D>();
 
         Player_StateMachine = new StateMachine();
-        Player_StateMachine.changeState(new Player_Movement());
 
         Player_Renderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
         Player_Animator = transform.GetChild(0).GetComponent<Animator>();
         Player_Transform = transform;
+    }
+
+    public void Start()
+    {
+        Player_StateMachine.changeState(new Player_Movement());
     }
 
     public void Update()
@@ -70,6 +74,11 @@ public static class Player_Input
     {
         return Input.GetKeyDown(KeyCode.E);
     }
+
+    public static bool Get_PlayerAttack()
+    {
+        return Input.GetMouseButtonDown(0);
+    }
 }
 #endregion
 #region Player_States
@@ -83,6 +92,8 @@ public class Player_Movement : stateDriverInterface
     public void onEnter()
     {
         StoredAnimationSet = CurrentAnimationSet;
+        PlayerController.Player_Animator.Play("Movement");
+        WeaponController.Controller.Weapon_StartMove();
     }
 
     public void onExit()
@@ -114,6 +125,11 @@ public class Player_Movement : stateDriverInterface
 
         WeaponController.Controller.Weapon_OnMove(Movement);
         WeaponController.Controller.Weapon_Flip(true ? Movement.x < 0 : false);
+
+        if (Player_Input.Get_PlayerAttack() && WeaponController.Controller.Check_MainWeapon())
+        {
+            PlayerController.Player_Controller.Get_PlayerStateMachine.changeState(new Player_LightAttack());
+        }
 
         if (Player_Input.Get_Interact())
         {
@@ -158,6 +174,46 @@ public class Player_Hold : stateDriverInterface
     public void onUpdate()
     {
 
+    }
+}
+public class Player_LightAttack : stateDriverInterface
+{
+    public string ID => "Player_LightAttack";
+
+    public void onEnter()
+    {
+        PlayerController.Player_Animator.Play("Light_Attack0");
+        WeaponController.Controller.On_LightAttack(OnAnimation_CallBack);
+    }
+
+    public void onExit()
+    {
+        
+    }
+
+    public void onFixedUpdate()
+    {
+        PlayerController.Player_RigidBody.MovePosition(PlayerController.Player_RigidBody.position + (new Vector2(.4f, 0f) * PlayerController.Player_Controller.Player_Speed * Time.deltaTime));
+    }
+
+    public void onGUI()
+    {
+        
+    }
+
+    public void onLateUpdate()
+    {
+        
+    }
+
+    public void onUpdate()
+    {
+        
+    }
+
+    public void OnAnimation_CallBack()
+    {
+        PlayerController.Player_Controller.Get_PlayerStateMachine.changeState(new Player_Movement());
     }
 }
 #endregion

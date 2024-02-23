@@ -21,10 +21,10 @@ public class Weapon : Item_Data
         return Clone;
     }
 
-    public override void OnEquip(int index = 0)
+    public override void OnEquip(int UI_Index = 0, int List_Index = 0)
     {
         WeaponController.Controller.Set_WeaponProperties(0, this);
-        UIManager.Manager.WeaponEquipSlotMain.sprite = Inventory_ItemSprite;
+        UIManager.Update_Weapon(0, GameManager.Manager.Weapon_Inventory.GetInventory_Data[List_Index]);
         return;
     }
 

@@ -32,22 +32,21 @@ public class UIManager : MonoBehaviour
     [Header("Section 1 Toggle")]
     [SerializeField] private GameObject Eq_Menu, Inv_Menu;
 
-    //Used for Portraying Slot Weapon
-    public Image WeaponEquipSlotMain;
-
-
     //Current Menu is used to Save the Menu we are Currently Using
     [SerializeField] private Transform Inventory_Menu_Container;
 
     private List<UIInventoryItem> UI_Inventory;
     public List<UIInventoryItem> Get_UIInventory => UI_Inventory;
 
+    //Weapon Slots
+    [SerializeField] private List<UIInventoryItem> UI_Weapons;
+
     //Allows us to pass the class ->
     public Section_ItemDescription Item_Description_Section;
 
     //Popup
     #region Pop-Up UI
-    [SerializeField] private UIManagerAnimationTriggerCall CenterText_Container;
+    [SerializeField] private AnimationTriggerCall CenterText_Container;
     [SerializeField] private TMP_Text Center_Text;
     public Action CenterTextCallBack;
     #endregion
@@ -105,6 +104,11 @@ public class UIManager : MonoBehaviour
     public static void Update_Inventory(int index, InventoryItem_Stack Stack)
     {
         Manager.UI_Inventory[index].Inventory_Update(Stack);
+    }
+
+    public static void Update_Weapon(int index, InventoryItem_Stack Stack)
+    {
+        Manager.UI_Weapons[index].Inventory_Update(Stack);
     }
 
     public void Change_Inventory(int index)
@@ -302,9 +306,9 @@ public class UI_SelectingWeapons : stateDriverInterface
             OnButtonEquip.eventID = EventTriggerType.PointerClick;
 
             if (GameManager.Manager.Weapon_Inventory.GetInventory_Data[element.Index] != null)
-                OnButtonEquip.callback.AddListener((CallBack) => { GameManager.Equip_Weapon(GameManager.Manager.Weapon_Inventory.GetInventory_Data[element.Index].data); });
+                OnButtonEquip.callback.AddListener((CallBack) => { GameManager.Equip_Weapon(GameManager.Manager.Weapon_Inventory.GetInventory_Data[element.Index].data, element.Index); });
             else
-                OnButtonEquip.callback.AddListener((CallBack) => { GameManager.Equip_Weapon(null); });
+                OnButtonEquip.callback.AddListener((CallBack) => { GameManager.Equip_Weapon(null, 0); });
 
             element.Get_Trigger.triggers.Add(OnButtonEquip);
         }

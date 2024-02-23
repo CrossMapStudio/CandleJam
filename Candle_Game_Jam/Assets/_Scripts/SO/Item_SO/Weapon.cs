@@ -1,17 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 
 [CreateAssetMenu(fileName = "Item Weapon", menuName = "ScriptableObjects/Item Weapon")]
 public class Weapon : Item_Data
 {
     private int Level = 1;
     [SerializeField] private Material Weapon_Mat;
+    public Material Get_WeaponMaterial => Weapon_Mat;
     public int GetWeaponLevel => Level;
-
     //Used for the Weapon Controller ->
-    public RuntimeAnimatorController RunTimeAnim_WeaponController;
-    //Animation Corresponding to Keys ->
+    public AnimatorOverrideController Animation_Override;
 
     public override Item_Data CreateInstance()
     {
@@ -22,12 +23,7 @@ public class Weapon : Item_Data
 
     public override void OnEquip(int index = 0)
     {
-        //Update UI
-        //Store in the Inventory Slot
-        //Spawn the Weapon Controller ---
-        //Awake of Weapon Controller -> Set SO
-        //Connect to the player controller -> Animations ->
-        PlayerController.Player_Controller.Get_WeaponController[index].Set_WeaponProperties(Weapon_Mat, RunTimeAnim_WeaponController);
+        WeaponController.Controller.Set_WeaponProperties(0, this);
         UIManager.Manager.WeaponEquipSlotMain.sprite = Inventory_ItemSprite;
         return;
     }

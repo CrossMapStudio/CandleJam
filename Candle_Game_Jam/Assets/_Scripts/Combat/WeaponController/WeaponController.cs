@@ -4,23 +4,61 @@ using UnityEngine;
 
 public class WeaponController : MonoBehaviour
 {
-    //Get in Awake
-    SpriteRenderer Weapon_Sprite;
-    public SpriteRenderer Renderer => Weapon_Sprite;
-
-    Animator Weapon_Animator;
-    public Animator GetWeaponAnimator => Weapon_Animator;
-
-
+    public static WeaponController Controller;
+    [SerializeField] private List<WeaponGroup> WeaponGroups;
+         
     public void Awake()
     {
-        Weapon_Sprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
-        Weapon_Animator = transform.GetChild(0).GetComponent<Animator>();
+        Controller = this;
+        Weapon_Check();
     }
 
-    public void Set_WeaponProperties(Material mat, RuntimeAnimatorController anim)
+    public void Set_WeaponProperties(int index, Weapon data)
     {
-        Weapon_Sprite.material = mat;
-        Weapon_Animator.runtimeAnimatorController = anim;
+        WeaponGroups[index]._renderer.gameObject.SetActive(true);
+
+        WeaponGroups[index]._data = data;
+        WeaponGroups[index]._renderer.material = data.Get_WeaponMaterial;
+
+        if (data.Animation_Override != null)
+            WeaponGroups[index]._animator.runtimeAnimatorController = data.Animation_Override;
+
+        Weapon_Check();
     }
+
+    public void Weapon_OnMove(Vector2 _currentMovement)
+    {
+        foreach(WeaponGroup element in WeaponGroups)
+        {
+            element._animator.SetFloat("XMovement", _currentMovement.x);
+            element._animator.SetFloat("YMovement", _currentMovement.y);
+        }
+    }
+
+    public void Weapon_Check()
+    {
+        foreach (WeaponGroup element in WeaponGroups)
+        {
+            if (element._data == null)
+                element._renderer.gameObject.SetActive(false);
+        }
+    }
+
+    public void Weapon_Flip(bool flipValue)
+    {
+        foreach (WeaponGroup element in WeaponGroups)
+        {
+            element._renderer.flipX = flipValue;
+        }
+    }
+}
+
+[System.Serializable]
+public class WeaponGroup
+{
+    [HideInInspector]
+    public Weapon _data;
+
+    public SpriteRenderer _renderer;
+    public Animator _animator;
 }

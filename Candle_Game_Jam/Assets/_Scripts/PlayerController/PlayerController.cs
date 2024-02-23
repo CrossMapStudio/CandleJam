@@ -23,10 +23,6 @@ public class PlayerController : MonoBehaviour
     public float Interaction_Distance;
     public LayerMask Interaction_Layer;
 
-    //On Player Equippable Containers
-    [SerializeField] private List<WeaponController> Weapon_Controllers;
-    public List<WeaponController> Get_WeaponController => Weapon_Controllers;
-
     public void Awake()
     {
         Player_Controller = this;
@@ -112,92 +108,12 @@ public class Player_Movement : stateDriverInterface
     public void onUpdate()
     {
         Movement = Player_Input.Get_Movement().normalized;
+        PlayerController.Player_Animator.SetFloat("XMovement", Movement.x);
+        PlayerController.Player_Animator.SetFloat("YMovement", Movement.y);
+        PlayerController.Player_Renderer.flipX = true ? Movement.x < 0 : false;
 
-        /*
-        CurrentAnimationSet = true ? Movement.magnitude != 0 : false;
-        
-        if (StoredAnimationSet != CurrentAnimationSet)
-            StoredAnimationSet = CurrentAnimationSet;
-        PlayerController.Player_Animator.SetBool("Player_Moving", StoredAnimationSet);
-        */
-
-        if (Movement.x == 0 && Movement.y == 0)
-        {
-            PlayerController.Player_Animator.Play("Idle", 0);
-            if (PlayerController.Player_Controller.Get_WeaponController[0].GetWeaponAnimator.runtimeAnimatorController != null)
-            {
-                PlayerController.Player_Controller.Get_WeaponController[0].GetWeaponAnimator.Play("idle");
-            }
-        }
-
-        if (Movement.x != 0 && Movement.y == 0)
-        {
-            PlayerController.Player_Animator.Play("SideRun", 0);
-            if (PlayerController.Player_Controller.Get_WeaponController[0].GetWeaponAnimator.runtimeAnimatorController != null)
-            {
-                PlayerController.Player_Controller.Get_WeaponController[0].GetWeaponAnimator.Play("side");
-            }
-        }
-
-        if (Movement.y != 0 && Movement.x == 0)
-        {
-            if (Movement.y > 0)
-            {
-                PlayerController.Player_Animator.Play("UpRun", 0);
-                if (PlayerController.Player_Controller.Get_WeaponController[0].GetWeaponAnimator.runtimeAnimatorController != null)
-                {
-                    PlayerController.Player_Controller.Get_WeaponController[0].GetWeaponAnimator.Play("up");
-                }
-            }
-            else
-            {
-                PlayerController.Player_Animator.Play("DownRun", 0);
-                if (PlayerController.Player_Controller.Get_WeaponController[0].GetWeaponAnimator.runtimeAnimatorController != null)
-                {
-                    PlayerController.Player_Controller.Get_WeaponController[0].GetWeaponAnimator.Play("down");
-                }
-            }
-        }
-
-        if (Movement.x != 0 && Movement.y != 0)
-        {
-            if (Movement.y > 0)
-            {
-                PlayerController.Player_Animator.Play("UpRunDiagonal", 0);
-                if (PlayerController.Player_Controller.Get_WeaponController[0].GetWeaponAnimator.runtimeAnimatorController != null)
-                {
-                    PlayerController.Player_Controller.Get_WeaponController[0].GetWeaponAnimator.Play("upSide");
-                }
-            }
-            else
-            {
-                PlayerController.Player_Animator.Play("DownRunDiagonal", 0);
-                if (PlayerController.Player_Controller.Get_WeaponController[0].GetWeaponAnimator.runtimeAnimatorController != null)
-                {
-                    PlayerController.Player_Controller.Get_WeaponController[0].GetWeaponAnimator.Play("downSide");
-                }
-            }
-        }
-
-
-
-
-        if (Movement.x < 0)
-        {
-            PlayerController.Player_Renderer.flipX = true;
-            if (PlayerController.Player_Controller.Get_WeaponController[0].GetWeaponAnimator.runtimeAnimatorController != null)
-            {
-                PlayerController.Player_Controller.Get_WeaponController[0].Renderer.flipX = true;
-            }
-        }
-        else if (Movement.x > 0)
-        {
-            PlayerController.Player_Renderer.flipX = false;
-            if (PlayerController.Player_Controller.Get_WeaponController[0].GetWeaponAnimator.runtimeAnimatorController != null)
-            {
-                PlayerController.Player_Controller.Get_WeaponController[0].Renderer.flipX = false;
-            }
-        }
+        WeaponController.Controller.Weapon_OnMove(Movement);
+        WeaponController.Controller.Weapon_Flip(true ? Movement.x < 0 : false);
 
         if (Player_Input.Get_Interact())
         {
@@ -214,8 +130,10 @@ public class Player_Hold : stateDriverInterface
 
     public void onEnter()
     {
-        PlayerController.Player_Animator.Play("Idle", 0);
-    }
+        PlayerController.Player_Animator.SetFloat("XMovement", 0f);
+        PlayerController.Player_Animator.SetFloat("YMovement", 0f);
+        WeaponController.Controller.Weapon_OnMove(Vector2.zero);
+    }  
 
     public void onExit()
     {

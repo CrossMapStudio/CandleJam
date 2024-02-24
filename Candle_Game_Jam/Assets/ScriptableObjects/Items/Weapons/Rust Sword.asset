@@ -20,4 +20,88 @@ MonoBehaviour:
   Item_UseCase: Used within the weapon slot.
   Item_Description: A broken short sword left by the previous owner.
   Weapon_Mat: {fileID: 2100000, guid: cdd9a9b2aef8d824883df048ac6eb990, type: 2}
-  RunTimeAnim_WeaponController: {fileID: 9100000, guid: 0fd48db5e02e5684f872efceac28cd63, type: 2}
+  Animation_Override: {fileID: 0}
+  Stat_Group:
+    Stats:
+      Damage: 8
+      Stamina: 2.5
+      Arcane: 0
+      Speed: 5
+      Critical_Damage: 12
+      Critical_Percentage: 10
+      H_Damage: 10
+      H_Stamina: 4
+      H_Arcane: 0
+      H_Speed: 8
+      H_Critical_Damage: 15
+      H_Critical_Percentage: 25
+    Traits:
+    - Trait_Type: 0
+      Percentage: 0
+      Level: 0
+      CursePercentage: 0
+      CurseLevel: 0
+    - Trait_Type: 1
+      Percentage: 0
+      Level: 0
+      CursePercentage: 0
+      CurseLevel: 0
+    - Trait_Type: 2
+      Percentage: 0
+      Level: 0
+      CursePercentage: 0
+      CurseLevel: 0
+    - Trait_Type: 3
+      Percentage: 20
+      Level: 1
+      CursePercentage: 0
+      CurseLevel: 0
+    - Trait_Type: 4
+      Percentage: 0
+      Level: 0
+      CursePercentage: 0
+      CurseLevel: 0
+    - Trait_Type: 5
+      Percentage: 0
+      Level: 0
+      CursePercentage: 0
+      CurseLevel: 0
+    - Trait_Type: 6
+      Percentage: 0
+      Level: 0
+      CursePercentage: 0
+      CurseLevel: 0
+    - Trait_Type: 7
+      Percentage: 0
+      Level: 0
+      CursePercentage: 0
+      CurseLevel: 0
+    - Trait_Type: 8
+      Percentage: 0
+      Level: 0
+      CursePercentage: 0
+      CurseLevel: 0
+    - Trait_Type: 9
+      Percentage: 0
+      Level: 0
+      CursePercentage: 0
+      CurseLevel: 0
+    Requirements:
+    - Stat_Type: 0
+      Requirement_Level: 1
+    - Stat_Type: 1
+      Requirement_Level: 1
+    - Stat_Type: 2
+      Requirement_Level: 0
+    - Stat_Type: 3
+      Requirement_Level: 0
+    - Stat_Type: 4
+      Requirement_Level: 0
+    - Stat_Type: 5
+      Requirement_Level: 1
+    - Stat_Type: 6
+      Requirement_Level: 0
+    - Stat_Type: 7
+      Requirement_Level: 0
+    - Stat_Type: 8
+      Requirement_Level: 0

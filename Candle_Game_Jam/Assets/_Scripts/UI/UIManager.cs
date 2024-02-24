@@ -43,6 +43,7 @@ public class UIManager : MonoBehaviour
 
     //Allows us to pass the class ->
     public Section_ItemDescription Item_Description_Section;
+    public Section_ItemStatistics Item_Statistics_Section;
 
     //Popup
     #region Pop-Up UI
@@ -254,6 +255,32 @@ public class Section_ItemDescription
     public Image Get_ItemLargeImage => Item_LargeImage;
 }
 
+[Serializable]
+public class Section_ItemStatistics
+{
+    [SerializeField] private BaseTrait_UI BaseStats;
+    public BaseTrait_UI Get_BaseStats => BaseStats;
+
+    [SerializeField] private List<SpecialTrait_UI> SpecialTraits;
+    public List<SpecialTrait_UI> Get_SpecialTraits => SpecialTraits;
+
+    public void UpdateBaseTraits(Weapon_BaseStats _stats)
+    {
+        Get_BaseStats.Update_BaseTraitUI(_stats);
+    }
+
+    public void UpdateSpecialTraits(List<Weapon_SpecialTrait> _TraitList)
+    {
+        for (int i = 0; i < Get_SpecialTraits.Count; i++)
+        {
+            Get_SpecialTraits[i].Update_SpecialTraitUI(_TraitList[i]);
+        }
+    }
+
+    [SerializeField] private List<TMP_Text> RequiredStats;
+    public List<TMP_Text> Get_RequiredStats => RequiredStats;
+}
+
 #region UI Manager States
 public class UI_Free : stateDriverInterface
 {
@@ -346,5 +373,4 @@ public class UI_SelectingWeapons : stateDriverInterface
         throw new NotImplementedException();
     }
 }
-
 #endregion

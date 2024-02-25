@@ -7,6 +7,9 @@ public class WeaponController : MonoBehaviour
 {
     public static WeaponController Controller;
     [SerializeField] private List<WeaponGroup> WeaponGroups;
+
+    [SerializeField] private Collider2D HitRadius;
+    [SerializeField] private Combat_Channel Combat_Channel;
   
     public void Awake()
     {
@@ -72,6 +75,8 @@ public class WeaponController : MonoBehaviour
         {
             element._animator.Play("Light_Attack_Weapon0");
         }
+
+        Combat_Channel.RaiseEvent(Player_Input.Get_Movement().normalized, 5f);
     }
 }
 

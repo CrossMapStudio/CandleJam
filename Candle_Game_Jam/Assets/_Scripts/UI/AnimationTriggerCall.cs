@@ -5,11 +5,10 @@ using UnityEngine;
 
 public class AnimationTriggerCall : MonoBehaviour
 {
-    private Action Trigger;
-    public Action Get_SetTrigger { get { return Trigger; } set { Trigger = value; } }
+    public AnimationActionSO AnimationEventTrigger;
 
-    public void Call_Trigger()
+    public void On_AnimationEvent()
     {
-        Trigger.Invoke();
+        AnimationEventTrigger.OnEventRaised.Invoke();
     }
 }

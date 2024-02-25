@@ -7,26 +7,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Item Weapon", menuName = "ScriptableObjects/Item Weapon")]
 public class Weapon : Item_Data
 {
-    [SerializeField] private Material Weapon_Mat;
-    public Material Get_WeaponMaterial => Weapon_Mat;
-
-    private int Level = 1;
-    public int GetWeaponLevel => Level;
     //Used for the Weapon Controller ->
     public AnimatorOverrideController Animation_Override;
     public StatisticGroup Stat_Group;
 
-    public override Item_Data CreateInstance()
-    {
-        Weapon Clone = new Weapon();
-        Clone = this;
-        return Clone;
-    }
-
-    public override void OnEquip(int UI_Index = 0, int List_Index = 0)
+    public override void OnEquip(Guid ID)
     {
         WeaponController.Controller.Set_WeaponProperties(0, this);
-        UIManager.Update_Weapon(0, GameManager.Manager.Weapon_Inventory.GetInventory_Data[List_Index]);
+        UIManager.Update_Weapon(0, ID);
         return;
     }
 
@@ -39,10 +27,10 @@ public class Weapon : Item_Data
     {
         UIManager.Manager.Item_Description_Section.Get_ItemTitle.text = Item_Name;
         UIManager.Manager.Item_Description_Section.Get_UseDescription.text = Item_UseCase;
-        UIManager.Manager.Item_Description_Section.Get_ItemLevel.text = "Lvl. " + GetWeaponLevel.ToString();
+        UIManager.Manager.Item_Description_Section.Get_ItemLevel.text = "Lvl. 1";
         UIManager.Manager.Item_Description_Section.Get_ItemLoreDescription.text = Item_Description;
         UIManager.Manager.Item_Description_Section.Get_ItemLargeImage.sprite = Inventory_ItemSprite;
-        UIManager.Manager.Item_Description_Section.Get_ItemLargeImage.material = Weapon_Mat;
+        UIManager.Manager.Item_Description_Section.Get_ItemLargeImage.material = Get_Material;
 
         UIManager.Manager.Item_Statistics_Section.UpdateSpecialTraits(Stat_Group.GetSpecialTraits);
         UIManager.Manager.Item_Statistics_Section.UpdateBaseTraits(Stat_Group.Get_BaseStats);

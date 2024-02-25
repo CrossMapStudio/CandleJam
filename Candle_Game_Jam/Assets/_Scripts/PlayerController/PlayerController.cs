@@ -23,6 +23,15 @@ public class PlayerController : MonoBehaviour
     public float Interaction_Distance;
     public LayerMask Interaction_Layer;
 
+    /// <summary>
+    /// Connected Channels through Scriptable Objects
+    /// </summary>
+    #region Channels
+    [SerializeField] private AnimationActionSO AnimationTrigger;
+    public AnimationActionSO Get_Channel => AnimationTrigger;
+    #endregion
+
+
     public void Awake()
     {
         Player_Controller = this;
@@ -146,6 +155,12 @@ public class Player_Hold : stateDriverInterface
 
     public void onEnter()
     {
+        if (WeaponController.Controller.Check_MainWeapon())
+        {
+            PlayerController.Player_Animator.Play("Light_Attack0");
+            WeaponController.Controller.On_LightAttack();
+        }
+
         PlayerController.Player_Animator.SetFloat("XMovement", 0f);
         PlayerController.Player_Animator.SetFloat("YMovement", 0f);
         WeaponController.Controller.Weapon_OnMove(Vector2.zero);
@@ -182,18 +197,19 @@ public class Player_LightAttack : stateDriverInterface
 
     public void onEnter()
     {
+        PlayerController.Player_Controller.Get_Channel.OnEventRaised.AddListener(OnAnimation_CallBack);
         PlayerController.Player_Animator.Play("Light_Attack0");
-        WeaponController.Controller.On_LightAttack(OnAnimation_CallBack);
+        WeaponController.Controller.On_LightAttack();
     }
 
     public void onExit()
     {
-        
+        PlayerController.Player_Controller.Get_Channel.OnEventRaised.RemoveListener(OnAnimation_CallBack);
     }
 
     public void onFixedUpdate()
     {
-        PlayerController.Player_RigidBody.MovePosition(PlayerController.Player_RigidBody.position + (new Vector2(.4f, 0f) * PlayerController.Player_Controller.Player_Speed * Time.deltaTime));
+
     }
 
     public void onGUI()

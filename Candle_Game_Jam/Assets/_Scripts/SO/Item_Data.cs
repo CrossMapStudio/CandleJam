@@ -1,15 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Item_Data : ScriptableObject
 {
-    //All Items Need ID's for Sorting
-    [SerializeField] private string ID;
-    public string GetID => ID;
-    
+    private Guid ID;
+    public Guid GetID => ID;
+
     //All Items Need Inventory Sprite
     public Sprite Inventory_ItemSprite;
+
+    [SerializeField] private Material SpriteMaterial;
+    public Material Get_Material => SpriteMaterial;
 
     //All Items Need Stack Capacity
     public int StackCapacity;
@@ -28,9 +31,13 @@ public abstract class Item_Data : ScriptableObject
     [TextArea(5, 8)]
     public string Item_Description;
 
-    public abstract void OnEquip(int UI_index = 0, int list_index = 0);
+    public void OnEnable()
+    {
+        ID = Guid.NewGuid();
+    }
+
+    public abstract void OnEquip(Guid ID);
     public abstract void OnUse();
     public abstract void UpdateUI();
-    public abstract Item_Data CreateInstance();
 }
 

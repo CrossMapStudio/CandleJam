@@ -12,11 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a18ac12018b1af84baf814cf805778f3, type: 3}
   m_Name: Rust Shield
   m_EditorClassIdentifier: 
-  ID: broken_shield
   Inventory_ItemSprite: {fileID: 21300000, guid: c04834557ad45a84a9bc91f9eeca39ec, type: 3}
+  SpriteMaterial: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   StackCapacity: 1
-  SpawnObject: {fileID: 0}
+  DropItem: {fileID: 0}
   Item_Name: Broken Shield
   Item_UseCase: A defensive item used for blocking incoming attacks.
   Item_Description: 'A broken shield left from the previous soul. '
-  Weapon_Mat: {fileID: 2100000, guid: cdd9a9b2aef8d824883df048ac6eb990, type: 2}
+  Animation_Override: {fileID: 0}
+  Stat_Group:
+    Stats:
+      Damage: 0
+      Stamina: 0
+      Arcane: 0
+      Speed: 0
+      Critical_Damage: 0
+      Critical_Percentage: 0
+      H_Damage: 0
+      H_Stamina: 0
+      H_Arcane: 0
+      H_Speed: 0
+      H_Critical_Damage: 0
+      H_Critical_Percentage: 0
+    Traits: []
+    Requirements: []

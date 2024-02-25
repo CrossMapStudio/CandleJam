@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -27,9 +27,8 @@ public class GameManager : MonoBehaviour
     private List<Inventory_Collection> Inventory_Collections;
     public List<Inventory_Collection> Get_Inventory_Collection => Inventory_Collections;
 
-    private List<Inventory_Collection> Equipment_Collections;
-    public List<Inventory_Collection> Get_Equipment_Collection => Equipment_Collections;
 
+    //Rework with States?
     [HideInInspector]
     public int Current_Menu;
 
@@ -38,10 +37,10 @@ public class GameManager : MonoBehaviour
     public Inventory_Collection Accessory_Inventory;
     public Inventory_Collection Consumable_Inventory;
     public Inventory_Collection Material_Inventory;
-
-    [Header("Equipment Inventory")] //Size of 2
-    public Inventory_Collection Weapon_Equipment;
     #endregion
+
+    //Used for the Weapons
+    private Guid[] Equipped_Weapons = new Guid[2];
 
     public void Awake()
     {
@@ -54,9 +53,6 @@ public class GameManager : MonoBehaviour
         Inventory_Collections.Add(Accessory_Inventory); //Index 2
         Inventory_Collections.Add(Consumable_Inventory); //Index 3
         Inventory_Collections.Add(Material_Inventory); //Index 4
-
-        Equipment_Collections = new List<Inventory_Collection>();
-        Equipment_Collections.Add(Weapon_Equipment);
     }
 
     public void Update()
@@ -96,7 +92,7 @@ public class GameManager : MonoBehaviour
                 HungerTick_Current = 0f;
                 foreach(StatisticManager element in Statistic_Managers)
                 {
-                    element.Adjust_Hunger(Random.Range(-1f, -2f));
+                    element.Adjust_Hunger(UnityEngine.Random.Range(-1f, -2f));
                 }
             }
         }
@@ -113,7 +109,7 @@ public class GameManager : MonoBehaviour
                 ThirstTick_Current = 0f;
                 foreach (StatisticManager element in Statistic_Managers)
                 {
-                    element.Adjust_Thirst(Random.Range(-1f, -2f));
+                    element.Adjust_Thirst(UnityEngine.Random.Range(-1f, -2f));
                 }
             }
         }
@@ -139,24 +135,37 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
-    public static void Swap_Item(int indexSelected, int indexSwap)
+    public static void Swap_Item(Guid selectedStack, Guid swapStack)
     {
-        InventoryItem_Stack Temporary_StackData;
-        Temporary_StackData = Manager.Get_Inventory_Collection[Manager.Current_Menu].GetInventory_Data[indexSwap];
-        Manager.Get_Inventory_Collection[Manager.Current_Menu].GetInventory_Data[indexSwap] = Manager.Get_Inventory_Collection[Manager.Current_Menu].GetInventory_Data[indexSelected];
-        Manager.Get_Inventory_Collection[Manager.Current_Menu].GetInventory_Data[indexSelected] = Temporary_StackData;
+        //Swap the Stack Locations ---
+        int Selected_Stack_SlotLocation;
+        Selected_Stack_SlotLocation = Manager.Get_Inventory_Collection[Manager.Current_Menu].Get_InventoryDictionary[selectedStack].Inventory_SlotLocation;
 
-        UIManager.Update_Inventory(indexSelected, Manager.Get_Inventory_Collection[Manager.Current_Menu].GetInventory_Data[indexSelected]);
-        UIManager.Update_Inventory(indexSwap, Manager.Get_Inventory_Collection[Manager.Current_Menu].GetInventory_Data[indexSwap]);
+        int Swap_Stack_SlotLocation;
+        Swap_Stack_SlotLocation = Manager.Get_Inventory_Collection[Manager.Current_Menu].Get_InventoryDictionary[swapStack].Inventory_SlotLocation;
+
+        Manager.Get_Inventory_Collection[Manager.Current_Menu].Get_InventoryDictionary[selectedStack].Inventory_SlotLocation = Swap_Stack_SlotLocation;
+        Manager.Get_Inventory_Collection[Manager.Current_Menu].Get_InventoryDictionary[swapStack].Inventory_SlotLocation = Selected_Stack_SlotLocation;
+
+        Guid Selected_ID = Manager.Get_Inventory_Collection[Manager.Current_Menu].GetInventory_Data[Selected_Stack_SlotLocation];
+        Guid Swap_ID = Manager.Get_Inventory_Collection[Manager.Current_Menu].GetInventory_Data[Swap_Stack_SlotLocation];
+
+        //Swap Slot Location on the Stacks --- Swap the IDs in the Array ---
+        Manager.Get_Inventory_Collection[Manager.Current_Menu].GetInventory_Data[Selected_Stack_SlotLocation] = Swap_ID;
+        Manager.Get_Inventory_Collection[Manager.Current_Menu].GetInventory_Data[Swap_Stack_SlotLocation] = Selected_ID;
+
+        //Display on UI ---
+        UIManager.Update_Inventory(Manager.Get_Inventory_Collection[Manager.Current_Menu].Get_InventoryDictionary[selectedStack].Inventory_SlotLocation);
+        UIManager.Update_Inventory(Manager.Get_Inventory_Collection[Manager.Current_Menu].Get_InventoryDictionary[swapStack].Inventory_SlotLocation);
     }
     #endregion
     #region Equipment
-    public static void Equip_Weapon(Item_Data data, int Index)
+    public static void Equip_Weapon(InventoryItem_Stack selectedStack, int equipment_slot)
     {
-        if (data != null)
+        if (selectedStack != null)
         {
-            Manager.Equipment_Collections[0].Add_Item(data); //Update UI ---
-            data.OnEquip();
+            Manager.Equipped_Weapons[equipment_slot] = selectedStack.GetID;
+            selectedStack.data.OnEquip(selectedStack.GetID);
         }
 
         UIManager.Manager.Get_UIMachine.changeState(new UI_Free());
@@ -172,12 +181,18 @@ public class Player_Stats
 
 public class InventoryItem_Stack
 {
-    public InventoryItem_Stack(int _currentStack, Item_Data _data)
+    public InventoryItem_Stack(int _currentStack, Item_Data _data, int _inventorySlotLocation)
     {
+        ID = Guid.NewGuid();
         currentStack = _currentStack;
         data = _data;
+        Inventory_SlotLocation = _inventorySlotLocation;
     }
+
+    private Guid ID;
+    public Guid GetID => ID;
 
     public int currentStack;
     public Item_Data data;
+    public int Inventory_SlotLocation;
 }

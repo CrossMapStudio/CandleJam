@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,15 +6,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Item Consumable", menuName = "ScriptableObjects/Item Consumable")]
 public class Consumable : Item_Data
 {
-    public override Item_Data CreateInstance()
-    {
-        Consumable Clone = new Consumable();
-        Clone = this;
-        return Clone;
-    }
-
     //Values to be used in Inventory Use Selection
-    public override void OnEquip(int index = 0, int list_index = 0)
+    public override void OnEquip(Guid ID)
     {
 
     }

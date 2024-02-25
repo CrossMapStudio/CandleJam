@@ -15,10 +15,6 @@ public class InteractionBase : MonoBehaviour
     [Header("Inventory Item Data")]
     public Item_Data ItemData;
 
-    //Active in Bubble ---
-    //UI Prompt
-    //Add to Selection
-
     private void Awake()
     {
         Pickup_Object = new Inventory_Item_Pickup(this);
@@ -40,7 +36,7 @@ public class Inventory_Item_Pickup : Physical_Object
 
     public void On_Interact()
     {
-        if (GameManager.Add_Item(Base.ItemData.CreateInstance()))
+        if (GameManager.Add_Item(Base.ItemData))
         {
             GameObject.Destroy(Base.gameObject);
         }

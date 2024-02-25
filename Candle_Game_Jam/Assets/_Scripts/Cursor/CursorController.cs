@@ -8,7 +8,7 @@ public class CursorController : MonoBehaviour
     private StateMachine CursorStateMachine;
     public StateMachine GetCursorStateMachine => CursorStateMachine;
 
-    public static int Selected_Index = -1, Swap_Index = -1;
+    public static System.Guid Selected_ID, Swap_ID;
 
     public void Awake()
     {
@@ -104,9 +104,9 @@ public class Free_Cursor : stateDriverInterface
 public class Select_Cursor : stateDriverInterface
 {
     public string ID => "Select_Cursor";
-    public Select_Cursor(int index)
+    public Select_Cursor(System.Guid ID)
     {
-        CursorController.Selected_Index = index;
+        CursorController.Selected_ID = ID;
     }
 
     public void onEnter()

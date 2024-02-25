@@ -83,11 +83,13 @@ public class UIManager : MonoBehaviour
                 Change_Inventory(0);
                 CursorController.Controller.GetCursorStateMachine.changeState(new Free_Cursor());
                 UI_StateMachine.changeState(new UI_Free());
+                PlayerController.Player_Controller.Get_PlayerStateMachine.changeState(new Player_Hold());
             }
             else
             {
                 CameraController.Controller.ResetCamera_Player();
                 CursorController.Controller.GetCursorStateMachine.changeState(new Locked_Cursor());
+                PlayerController.Player_Controller.Get_PlayerStateMachine.changeState(new Player_Movement());
             }   
         }
     }
@@ -102,14 +104,14 @@ public class UIManager : MonoBehaviour
         Manager.UI_ThirstBar.fillAmount = currentValue / 100f;
     }
 
-    public static void Update_Inventory(int index, InventoryItem_Stack Stack)
+    public static void Update_Inventory(int index)
     {
-        Manager.UI_Inventory[index].Inventory_Update(Stack);
+        Manager.UI_Inventory[index].Inventory_Update(GameManager.Manager.Get_Inventory_Collection[GameManager.Manager.Current_Menu].GetInventory_Data[index]);
     }
 
-    public static void Update_Weapon(int index, InventoryItem_Stack Stack)
+    public static void Update_Weapon(int index, Guid ID)
     {
-        Manager.UI_Weapons[index].Inventory_Update(Stack);
+        Manager.UI_Weapons[index].Inventory_Update(ID);
     }
 
     public void Change_Inventory(int index)
@@ -151,7 +153,7 @@ public class UIManager : MonoBehaviour
     {
         Center_Text.text = _text;
         CenterText_Container.gameObject.SetActive(true);
-        CenterText_Container.Get_SetTrigger = EndCenterText;
+        //CenterText_Container.Get_SetTrigger = EndCenterText;
         CenterTextCallBack = _CenterTextCallBack;
     }
 
@@ -332,8 +334,8 @@ public class UI_SelectingWeapons : stateDriverInterface
             EventTrigger.Entry OnButtonEquip = new EventTrigger.Entry();
             OnButtonEquip.eventID = EventTriggerType.PointerClick;
 
-            if (GameManager.Manager.Weapon_Inventory.GetInventory_Data[element.Index] != null)
-                OnButtonEquip.callback.AddListener((CallBack) => { GameManager.Equip_Weapon(GameManager.Manager.Weapon_Inventory.GetInventory_Data[element.Index].data, element.Index); });
+            if (GameManager.Manager.Weapon_Inventory.GetInventory_Data[element.Index] != Guid.Empty)
+                OnButtonEquip.callback.AddListener((CallBack) => { GameManager.Equip_Weapon(GameManager.Manager.Weapon_Inventory.Get_InventoryDictionary[GameManager.Manager.Weapon_Inventory.GetInventory_Data[element.Index]], 0); });
             else
                 OnButtonEquip.callback.AddListener((CallBack) => { GameManager.Equip_Weapon(null, 0); });
 

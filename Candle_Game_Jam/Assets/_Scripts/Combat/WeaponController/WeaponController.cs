@@ -19,7 +19,7 @@ public class WeaponController : MonoBehaviour
         WeaponGroups[index]._renderer.gameObject.SetActive(true);
 
         WeaponGroups[index]._data = data;
-        WeaponGroups[index]._renderer.material = data.Get_WeaponMaterial;
+        WeaponGroups[index]._renderer.material = data.Get_Material;
 
         if (data.Animation_Override != null)
             WeaponGroups[index]._animator.runtimeAnimatorController = data.Animation_Override;
@@ -66,11 +66,10 @@ public class WeaponController : MonoBehaviour
         }
     }
 
-    public void On_LightAttack(Action AssignedCallBack)
+    public void On_LightAttack()
     {
         foreach(WeaponGroup element in WeaponGroups)
         {
-            element.Trigger.Get_SetTrigger = AssignedCallBack;
             element._animator.Play("Light_Attack_Weapon0");
         }
     }

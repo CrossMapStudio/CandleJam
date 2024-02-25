@@ -8,6 +8,7 @@ public class UIInventoryItem : MonoBehaviour
 {
     public int Index;
     [SerializeField] private Sprite Empty_Sprite;
+    private Material Sprite_DefaultMaterial;
     [SerializeField] private Image Inventory_Image;
     [SerializeField] private TMPro.TMP_Text Inventory_Amount;
     private InventoryItem_Stack CurrentStack;
@@ -20,39 +21,44 @@ public class UIInventoryItem : MonoBehaviour
     {
         Index = transform.GetSiblingIndex();
         Trigger = GetComponent<EventTrigger>();
+        Sprite_DefaultMaterial = Inventory_Image.material;
     }
 
-    public void Inventory_Update(InventoryItem_Stack Stack)
+    public void Inventory_Update(System.Guid ID)
     {
-        if (Stack == null)
+        if (ID == System.Guid.Empty)
         {
             if (Inventory_Amount)
                 Inventory_Amount.text = "0";
             Inventory_Image.sprite = Empty_Sprite;
+            Inventory_Image.material = Sprite_DefaultMaterial;
             CurrentStack = null;
         }
         else
         {
+            var _Stack = GameManager.Manager.Get_Inventory_Collection[GameManager.Manager.Current_Menu].Get_InventoryDictionary[ID];
+
             if (Inventory_Amount)
-                Inventory_Amount.text = Stack.currentStack.ToString();
-            Inventory_Image.sprite = Stack.data.Inventory_ItemSprite;
-            CurrentStack = Stack;
+                Inventory_Amount.text = _Stack.currentStack.ToString();
+            Inventory_Image.sprite = _Stack.data.Inventory_ItemSprite;
+            Inventory_Image.material = _Stack.data.Get_Material;
+            CurrentStack = _Stack;
         }
     }
 
     public void Pointer_Entered()
     {
-        Debug.Log("Pointer Entered" + Index);
-
         if (CursorController.Controller.GetCursorStateMachine.getCurrentStateName() == "Select_Cursor")
         {
-            CursorController.Swap_Index = Index;
+            if (CurrentStack != null)
+                CursorController.Swap_ID = CurrentStack.GetID;
         }
         else
         {
             if (CurrentStack != null)
             {
                 CurrentStack.data.UpdateUI();
+                Debug.Log("On Hover: " + CurrentStack.GetID);
             }
             else
             {
@@ -67,23 +73,20 @@ public class UIInventoryItem : MonoBehaviour
 
     public void Pointer_Exited()
     {
-        Debug.Log("Pointer Exited" + Index);
-        CursorController.Swap_Index = -1;
+        CursorController.Swap_ID = System.Guid.Empty;
     }
 
     public void OnDrag_Started()
     {
-        Debug.Log("Drag Started");
-        CursorController.Controller.GetCursorStateMachine.changeState(new Select_Cursor(Index));
+        CursorController.Controller.GetCursorStateMachine.changeState(new Select_Cursor(CurrentStack.GetID));
     }
 
     public void OnDrag_Ended()
     {
-        Debug.Log("Drag Ended" + Index);
-        if (CursorController.Swap_Index != -1)
+        if (CursorController.Swap_ID != System.Guid.Empty)
         {
             //Swap the Elements within the Index ---
-            GameManager.Swap_Item(CursorController.Selected_Index, CursorController.Swap_Index);
+            GameManager.Swap_Item(CursorController.Selected_ID, CursorController.Swap_ID);
         }
 
         CursorController.Controller.GetCursorStateMachine.changeState(new Free_Cursor());

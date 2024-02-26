@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-[CreateAssetMenu(fileName = "Subscription", menuName = "ScriptableObjects/Channel")]
-public class AnimationActionSO : ScriptableObject
+[CreateAssetMenu(fileName = "Combat Invoke", menuName = "Combat Invoke/Animation Caller")]
+public class CombatInvoke : ScriptableObject
 {
     public UnityEvent OnEventRaised;
     public void RaiseEvent()

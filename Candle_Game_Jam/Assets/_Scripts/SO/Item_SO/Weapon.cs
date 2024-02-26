@@ -8,8 +8,7 @@ using UnityEngine;
 public class Weapon : Item_Data
 {
     //Used for the Weapon Controller ->
-    public AnimatorOverrideController Animation_Override;
-    public StatisticGroup Stat_Group;
+    public WeaponType Weapon_Type;
 
     public override void OnEquip(Guid ID)
     {
@@ -32,85 +31,7 @@ public class Weapon : Item_Data
         UIManager.Manager.Item_Description_Section.Get_ItemLargeImage.sprite = Inventory_ItemSprite;
         UIManager.Manager.Item_Description_Section.Get_ItemLargeImage.material = Get_Material;
 
-        UIManager.Manager.Item_Statistics_Section.UpdateSpecialTraits(Stat_Group.GetSpecialTraits);
-        UIManager.Manager.Item_Statistics_Section.UpdateBaseTraits(Stat_Group.Get_BaseStats);
+        UIManager.Manager.Item_Statistics_Section.UpdateSpecialTraits(Weapon_Type.Stat_Group.GetSpecialTraits);
+        UIManager.Manager.Item_Statistics_Section.UpdateBaseTraits(Weapon_Type.Stat_Group.Get_BaseStats);
     }
-}
-
-[Serializable]
-public class StatisticGroup
-{
-    public enum W_SpecialTrait
-    {
-        Burning,
-        Corrosion,
-        Plague,
-        Bleed,
-        Faith,
-        Arcane,
-        Luck,
-        Leach,
-        Curse,
-        Illusion
-    }
-
-    public enum W_Requirement
-    {
-        Strength,
-        Stamina,
-        Arcane,
-        Agility,
-        Faith,
-        SingleWeapon,
-        DuelWeapon,
-        TwoHandedWeapon,
-        DefensiveWeapon
-    }
-
-    [SerializeField] private Weapon_BaseStats Stats;
-    public Weapon_BaseStats Get_BaseStats => Stats;
-    
-    //Special Trait Values ---
-    [SerializeField] private List<Weapon_SpecialTrait> Traits;
-    public List<Weapon_SpecialTrait> GetSpecialTraits => Traits;
-
-
-    [SerializeField] private List<Weapon_Requirements> Requirements;
-    public List<Weapon_Requirements> Get_Requirements => Requirements;
-}
-
-[Serializable]
-public class Weapon_BaseStats
-{
-    [Range(0f, 100f)]
-    public float Damage, Stamina, Arcane, Speed, Critical_Damage, Critical_Percentage;
-
-    [Range(0f, 100f)]
-    public float H_Damage, H_Stamina, H_Arcane, H_Speed, H_Critical_Damage, H_Critical_Percentage;
-}
-
-[Serializable]
-public class Weapon_SpecialTrait
-{
-    public StatisticGroup.W_SpecialTrait Trait_Type;
-    
-    [Range(0f, 100f)]
-    public float Percentage;
-
-    [Range(0f, 100f)]
-    public float Level;
-
-    [Range(0f, 100f)]
-    public float CursePercentage;
-
-    [Range(0f, 100f)]
-    public float CurseLevel;
-}
-
-[Serializable]
-public class Weapon_Requirements
-{
-    public StatisticGroup.W_Requirement Stat_Type;
-    [Range(0, 100)]
-    public int Requirement_Level;
 }

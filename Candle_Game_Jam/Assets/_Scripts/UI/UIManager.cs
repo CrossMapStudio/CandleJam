@@ -47,7 +47,7 @@ public class UIManager : MonoBehaviour
 
     //Popup
     #region Pop-Up UI
-    [SerializeField] private AnimationTriggerCall CenterText_Container;
+    [SerializeField] private Combat_AnimationCaller CenterText_Container;
     [SerializeField] private TMP_Text Center_Text;
     public Action CenterTextCallBack;
     #endregion

@@ -23,12 +23,16 @@ public class PlayerController : MonoBehaviour
     public float Interaction_Distance;
     public LayerMask Interaction_Layer;
 
+    //Used for Combat if no Input Direction is Given ---
+    private Vector3 storedDirection;
+    public Vector3 Get_StoredDirection => storedDirection;
+
     /// <summary>
     /// Connected Channels through Scriptable Objects
     /// </summary>
     #region Channels
-    [SerializeField] private AnimationActionSO AnimationTrigger;
-    public AnimationActionSO Get_Channel => AnimationTrigger;
+    [SerializeField] private CombatInvoke AnimationTrigger;
+    public CombatInvoke Get_Channel => AnimationTrigger;
     #endregion
 
 
@@ -52,6 +56,10 @@ public class PlayerController : MonoBehaviour
     public void Update()
     {
         Player_StateMachine.executeStateUpdate();
+
+        //For Keeping the Last Direction the Player Moved ---
+        var stored = Player_Input.Get_Movement();
+        storedDirection = stored == Vector3.zero ? storedDirection : stored;
     }
 
     public void FixedUpdate()
@@ -130,10 +138,10 @@ public class Player_Movement : stateDriverInterface
         Movement = Player_Input.Get_Movement().normalized;
         PlayerController.Player_Animator.SetFloat("XMovement", Movement.x);
         PlayerController.Player_Animator.SetFloat("YMovement", Movement.y);
-        PlayerController.Player_Renderer.flipX = true ? Movement.x < 0 : false;
+        PlayerController.Player_Renderer.flipX = true ? PlayerController.Player_Controller.Get_StoredDirection.x < 0 : false;
 
         WeaponController.Controller.Weapon_OnMove(Movement);
-        WeaponController.Controller.Weapon_Flip(true ? Movement.x < 0 : false);
+        WeaponController.Controller.Weapon_Flip(true ? PlayerController.Player_Controller.Get_StoredDirection.x < 0 : false);
 
         if (Player_Input.Get_PlayerAttack() && WeaponController.Controller.Check_MainWeapon())
         {
@@ -158,7 +166,7 @@ public class Player_Hold : stateDriverInterface
         if (WeaponController.Controller.Check_MainWeapon())
         {
             PlayerController.Player_Animator.Play("Light_Attack0");
-            WeaponController.Controller.On_LightAttack();
+            WeaponController.Controller.On_InventoryWeaponInspect();
         }
 
         PlayerController.Player_Animator.SetFloat("XMovement", 0f);
@@ -197,14 +205,13 @@ public class Player_LightAttack : stateDriverInterface
 
     public void onEnter()
     {
-        PlayerController.Player_Controller.Get_Channel.OnEventRaised.AddListener(OnAnimation_CallBack);
         PlayerController.Player_Animator.Play("Light_Attack0");
-        WeaponController.Controller.On_LightAttack();
+        WeaponController.Controller.On_LightAttackInitialize();
     }
 
     public void onExit()
     {
-        PlayerController.Player_Controller.Get_Channel.OnEventRaised.RemoveListener(OnAnimation_CallBack);
+
     }
 
     public void onFixedUpdate()
@@ -225,11 +232,6 @@ public class Player_LightAttack : stateDriverInterface
     public void onUpdate()
     {
         
-    }
-
-    public void OnAnimation_CallBack()
-    {
-        PlayerController.Player_Controller.Get_PlayerStateMachine.changeState(new Player_Movement());
     }
 }
 #endregion

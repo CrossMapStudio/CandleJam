@@ -1,0 +1,100 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91e6addb556ef09438088ba0a579482f, type: 3}
+  m_Name: RustAxe
+  m_EditorClassIdentifier: 
+  Animation_Override: {fileID: 0}
+  Stat_Group:
+    Stats:
+      Damage: 10
+      Stamina: 3
+      Arcane: 0
+      Speed: 2
+      Critical_Damage: 12
+      Critical_Percentage: 50
+      H_Damage: 12
+      H_Stamina: 5
+      H_Arcane: 12
+      H_Speed: 12
+      H_Critical_Damage: 12
+      H_Critical_Percentage: 12
+    Traits:
+    - Trait_Type: 0
+      Percentage: 15.6
+      Level: 9.6
+      CursePercentage: 24.3
+      CurseLevel: 14.4
+    - Trait_Type: 1
+      Percentage: 15.6
+      Level: 13.3
+      CursePercentage: 32.7
+      CurseLevel: 13.2
+    - Trait_Type: 2
+      Percentage: 15.2
+      Level: 25.6
+      CursePercentage: 14.1
+      CurseLevel: 9.5
+    - Trait_Type: 3
+      Percentage: 65.9
+      Level: 18.2
+      CursePercentage: 43
+      CurseLevel: 37.1
+    - Trait_Type: 4
+      Percentage: 52.5
+      Level: 40.6
+      CursePercentage: 27.8
+      CurseLevel: 17.5
+    - Trait_Type: 5
+      Percentage: 15
+      Level: 34.4
+      CursePercentage: 24.1
+      CurseLevel: 11.5
+    - Trait_Type: 6
+      Percentage: 52.1
+      Level: 30.3
+      CursePercentage: 15.4
+      CurseLevel: 45.5
+    - Trait_Type: 7
+      Percentage: 64.5
+      Level: 49
+      CursePercentage: 49.5
+      CurseLevel: 73.4
+    - Trait_Type: 8
+      Percentage: 46.1
+      Level: 64.5
+      CursePercentage: 81.4
+      CurseLevel: 71.9
+    - Trait_Type: 9
+      Percentage: 16.1
+      Level: 8.8
+      CursePercentage: 8.2
+      CurseLevel: 34.6
+    Requirements:
+    - Stat_Type: 0
+      Requirement_Level: 68
+    - Stat_Type: 1
+      Requirement_Level: 8
+    - Stat_Type: 2
+      Requirement_Level: 42
+    - Stat_Type: 3
+      Requirement_Level: 32
+    - Stat_Type: 4
+      Requirement_Level: 61
+    - Stat_Type: 5
+      Requirement_Level: 38
+    - Stat_Type: 6
+      Requirement_Level: 14
+    - Stat_Type: 7
+      Requirement_Level: 40
+    - Stat_Type: 8
+      Requirement_Level: 8
+  CombatChannel: {fileID: 11400000, guid: 0fd066bbc9e1b664786db04e9ce53b62, type: 2}

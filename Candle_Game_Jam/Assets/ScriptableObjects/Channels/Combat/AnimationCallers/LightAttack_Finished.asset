@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f21a487813f10cc429945f8aefb2b7e3, type: 3}
-  m_Name: LightAttack_Channel
+  m_Name: LightAttack_Finished
   m_EditorClassIdentifier: 
   OnEventRaised:
     m_PersistentCalls:

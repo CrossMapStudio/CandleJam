@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class WeaponType : ScriptableObject
 {
@@ -13,6 +14,9 @@ public abstract class WeaponType : ScriptableObject
     public abstract void OnLightAttack_Initialized();
     public abstract void OnLightAttack_AnimationEvent();
     public abstract void OnLightAttack_Finished();
+    private UnityEvent On_AttackFinish;
+    public UnityEvent Get_OnAttackFinish => On_AttackFinish;
+
 
     public abstract void onHeavyAttack();
     public abstract void onBlock();

@@ -16,11 +16,30 @@ public class WeaponController : MonoBehaviour
     //Weapon Type
     private WeaponType Assigned_WeaponType;
     [SerializeField] private CombatInvoke On_LightInitialized, On_LightEvent, On_LightFinished;
+
+    private bool Attack_Queue;
   
     public void Awake()
     {
         Controller = this;
         Weapon_Check();
+    }
+
+    public void Update()
+    {
+        /*
+        if (Player_Input.Get_PlayerAttack() && Controller.Check_MainWeapon())
+        {
+            if (PlayerController.Player_Controller.Get_PlayerStateMachine.getCurrentStateName() == "Player_Movement")
+            {
+                PlayerController.Player_Controller.Get_PlayerStateMachine.changeState(new Player_LightAttack());
+            }
+            else if (PlayerController.Player_Controller.Get_PlayerStateMachine.getCurrentStateName() == "Player_LightAttack")
+            {
+                Attack_Queue = true;
+            }
+        }
+        */
     }
 
     public void Set_WeaponProperties(int index, Weapon data)
@@ -43,6 +62,7 @@ public class WeaponController : MonoBehaviour
         On_LightInitialized.OnEventRaised.AddListener(Assigned_WeaponType.OnLightAttack_Initialized);
         On_LightEvent.OnEventRaised.AddListener(Assigned_WeaponType.OnLightAttack_AnimationEvent);
         On_LightFinished.OnEventRaised.AddListener(Assigned_WeaponType.OnLightAttack_Finished);
+        Assigned_WeaponType.Get_OnAttackFinish.AddListener(On_LightAttackFinished);
 
         Weapon_Check();
     }
@@ -90,7 +110,23 @@ public class WeaponController : MonoBehaviour
     {
         foreach(WeaponGroup element in WeaponGroups)
         {
-            element._animator.Play("Light_Attack_Weapon0");
+            element._animator.Play("Light_Attack_Weapon0", 0, 0);
+        }
+    }
+
+    public void On_LightAttackFinished()
+    {
+        //Check if there is a Queue --- Use Current Player State to Drive?
+        if (Attack_Queue)
+        {
+            //Call Another Attack
+            PlayerController.Player_Controller.Get_PlayerStateMachine.changeState(new Player_LightAttack());
+            Attack_Queue = false;
+        }
+        else
+        {
+            //Change Back to Player Free Movement ---
+            PlayerController.Player_Controller.Get_PlayerStateMachine.changeState(new Player_Movement());
         }
     }
 

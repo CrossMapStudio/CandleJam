@@ -6,7 +6,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using Cinemachine;
-
+using UnityEngine.InputSystem;
 public class UIManager : MonoBehaviour
 {
     public static UIManager Manager;
@@ -71,26 +71,28 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void Update()
+    private void OnEnable()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            Inventory.SetActive(!Inventory.activeSelf);
+        PlayerController.Get_Inventory.Enable();
+        PlayerController.Get_Inventory.performed += ToggleUI;
+    }
 
-            if (Inventory.activeSelf)
-            {
-                CameraController.Controller.ChangeCamera_Player(1f, new Vector3(1f, 0, 0));
-                Change_Inventory(0);
-                CursorController.Controller.GetCursorStateMachine.changeState(new Free_Cursor());
-                UI_StateMachine.changeState(new UI_Free());
-                PlayerController.Player_Controller.Get_PlayerStateMachine.changeState(new Player_Hold());
-            }
-            else
-            {
-                CameraController.Controller.ResetCamera_Player();
-                CursorController.Controller.GetCursorStateMachine.changeState(new Locked_Cursor());
-                PlayerController.Player_Controller.Get_PlayerStateMachine.changeState(new Player_Movement());
-            }   
+    public void ToggleUI(InputAction.CallbackContext obj)
+    {
+        Inventory.SetActive(!Inventory.activeSelf);
+        if (Inventory.activeSelf)
+        {
+            CameraController.Controller.ChangeCamera_Player(1f, new Vector3(1f, 0, 0));
+            Change_Inventory(0);
+            CursorController.Controller.GetCursorStateMachine.changeState(new Free_Cursor());
+            UI_StateMachine.changeState(new UI_Free());
+            PlayerController.Player_Controller.Get_PlayerStateMachine.changeState(new Player_Hold());
+        }
+        else
+        {
+            CameraController.Controller.ResetCamera_Player();
+            CursorController.Controller.GetCursorStateMachine.changeState(new Locked_Cursor());
+            PlayerController.Player_Controller.Get_PlayerStateMachine.changeState(new Player_Movement());
         }
     }
 

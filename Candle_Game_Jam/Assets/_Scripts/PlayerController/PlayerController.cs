@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,6 +10,21 @@ public class PlayerController : MonoBehaviour
     public static Rigidbody2D Player_RigidBody;
     public static SpriteRenderer Player_Renderer;
     public static Animator Player_Animator;
+
+    #region Inputs
+    //Subscribe through the Player Controller ---
+    private Player_Input Input_Controller;
+    public Player_Input Get_Input => Input_Controller;
+
+    private static InputAction Movement;
+    public static InputAction Get_Movement => Movement;
+
+    public static InputAction Interact;
+    public static InputAction Get_Interact => Interact;
+
+    public static InputAction Inventory;
+    public static InputAction Get_Inventory => Inventory;
+    #endregion
 
     StateMachine Player_StateMachine;
     public StateMachine Get_PlayerStateMachine => Player_StateMachine;
@@ -46,6 +62,20 @@ public class PlayerController : MonoBehaviour
         Player_Renderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
         Player_Animator = transform.GetChild(0).GetComponent<Animator>();
         Player_Transform = transform;
+
+        //Create a new instance for the Input ---
+        Input_Controller = new Player_Input();
+
+        Movement = Input_Controller.Player_Base.Movement;
+        Interact = Input_Controller.Player_Base.Interact;
+        Inventory = Input_Controller.Player_Base.Inventory;
+    }
+
+    private void OnEnable()
+    {
+        Movement.Enable();
+        Interact.Enable();
+        Inventory.Enable();
     }
 
     public void Start()
@@ -58,8 +88,8 @@ public class PlayerController : MonoBehaviour
         Player_StateMachine.executeStateUpdate();
 
         //For Keeping the Last Direction the Player Moved ---
-        var stored = Player_Input.Get_Movement();
-        storedDirection = stored == Vector3.zero ? storedDirection : stored;
+        Vector2 stored = Get_Movement.ReadValue<Vector2>();
+        storedDirection = stored == Vector2.zero ? storedDirection : stored;
     }
 
     public void FixedUpdate()
@@ -78,26 +108,6 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, Interaction_Distance);
     }
 }
-
-#region Player_Input
-public static class Player_Input
-{
-    public static Vector3 Get_Movement()
-    {
-        return new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0f);
-    }
-
-    public static bool Get_Interact()
-    {
-        return Input.GetKeyDown(KeyCode.E);
-    }
-
-    public static bool Get_PlayerAttack()
-    {
-        return Input.GetMouseButtonDown(0);
-    }
-}
-#endregion
 #region Player_States
 public class Player_Movement : stateDriverInterface
 {
@@ -111,11 +121,13 @@ public class Player_Movement : stateDriverInterface
         StoredAnimationSet = CurrentAnimationSet;
         PlayerController.Player_Animator.Play("Movement");
         WeaponController.Controller.Weapon_StartMove();
+
+        PlayerController.Interact.performed += On_Interact;
     }
 
     public void onExit()
     {
-
+        PlayerController.Interact.performed -= On_Interact;
     }
 
     public void onFixedUpdate()
@@ -135,25 +147,21 @@ public class Player_Movement : stateDriverInterface
 
     public void onUpdate()
     {
-        Movement = Player_Input.Get_Movement().normalized;
+        Movement = PlayerController.Get_Movement.ReadValue<Vector2>();
+
         PlayerController.Player_Animator.SetFloat("XMovement", Movement.x);
         PlayerController.Player_Animator.SetFloat("YMovement", Movement.y);
         PlayerController.Player_Renderer.flipX = true ? PlayerController.Player_Controller.Get_StoredDirection.x < 0 : false;
 
         WeaponController.Controller.Weapon_OnMove(Movement);
         WeaponController.Controller.Weapon_Flip(true ? PlayerController.Player_Controller.Get_StoredDirection.x < 0 : false);
+    }
 
-        if (Player_Input.Get_PlayerAttack() && WeaponController.Controller.Check_MainWeapon())
+    public void On_Interact(InputAction.CallbackContext obj)
+    {
+        if (PlayerController.Player_Controller.Interactable_Object != null)
         {
-            PlayerController.Player_Controller.Get_PlayerStateMachine.changeState(new Player_LightAttack());
-        }
-
-        if (Player_Input.Get_Interact())
-        {
-            if (PlayerController.Player_Controller.Interactable_Object != null)
-            {
-                PlayerController.Player_Controller.Interactable_Object.Pickup_Object.On_Interact();
-            }
+            PlayerController.Player_Controller.Interactable_Object.Pickup_Object.On_Interact();
         }
     }
 }
@@ -205,7 +213,7 @@ public class Player_LightAttack : stateDriverInterface
 
     public void onEnter()
     {
-        PlayerController.Player_Animator.Play("Light_Attack0");
+        PlayerController.Player_Animator.Play("Light_Attack0", 0, 0);
         WeaponController.Controller.On_LightAttackInitialize();
     }
 
@@ -231,7 +239,7 @@ public class Player_LightAttack : stateDriverInterface
 
     public void onUpdate()
     {
-        
+
     }
 }
 #endregion

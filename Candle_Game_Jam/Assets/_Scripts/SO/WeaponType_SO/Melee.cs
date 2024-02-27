@@ -38,7 +38,7 @@ public class Melee : WeaponType
 
     public override void OnLightAttack_Finished()
     {
-        //Used without Check of Input ---
-        PlayerController.Player_Controller.Get_PlayerStateMachine.changeState(new Player_Movement());
+        if (Get_OnAttackFinish != null)
+            Get_OnAttackFinish.Invoke();
     }
 }

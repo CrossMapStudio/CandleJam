@@ -9,32 +9,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a18ac12018b1af84baf814cf805778f3, type: 3}
-  m_Name: Sword of Eitra
+  m_Script: {fileID: 11500000, guid: 91e6addb556ef09438088ba0a579482f, type: 3}
+  m_Name: SwordOfEden_M
   m_EditorClassIdentifier: 
-  Inventory_ItemSprite: {fileID: 21300000, guid: 01c9c470811b8fa4bbc71420674a42c8, type: 3}
-  SpriteMaterial: {fileID: 2100000, guid: 58d122191ff25014697d366bbe466b15, type: 2}
-  StackCapacity: 1
-  DropItem: {fileID: 0}
-  Item_Name: The Sword of Eitra
-  Item_UseCase: "\t\t"
-  Item_Description: The sword of Eitra. A legendary weapon forged from the fires
-    of Lorista.
   Animation_Override: {fileID: 0}
+  Attack_CombinationLimit: 3
   Stat_Group:
     Stats:
-      Damage: 80
-      Stamina: 10
-      Arcane: 20
-      Speed: 50
-      Critical_Damage: 90
-      Critical_Percentage: 75
-      H_Damage: 100
-      H_Stamina: 25
+      Damage: 58
+      Stamina: 21
+      Arcane: 50
+      Speed: 5
+      Critical_Damage: 76
+      Critical_Percentage: 32
+      H_Damage: 68
+      H_Stamina: 32
       H_Arcane: 65
-      H_Speed: 60
-      H_Critical_Damage: 100
-      H_Critical_Percentage: 95
+      H_Speed: 8
+      H_Critical_Damage: 90
+      H_Critical_Percentage: 10
     Traits:
     - Trait_Type: 0
       Percentage: 0
@@ -52,18 +45,18 @@ MonoBehaviour:
       CursePercentage: 0
       CurseLevel: 0
     - Trait_Type: 3
-      Percentage: 0
-      Level: 0
+      Percentage: 10
+      Level: 1
       CursePercentage: 0
       CurseLevel: 0
     - Trait_Type: 4
-      Percentage: 0
-      Level: 0
-      CursePercentage: 0
-      CurseLevel: 0
+      Percentage: 90
+      Level: 20
+      CursePercentage: 50
+      CurseLevel: 20
     - Trait_Type: 5
-      Percentage: 0
-      Level: 0
+      Percentage: 30
+      Level: 15
       CursePercentage: 0
       CurseLevel: 0
     - Trait_Type: 6
@@ -82,8 +75,27 @@ MonoBehaviour:
       CursePercentage: 0
       CurseLevel: 0
     - Trait_Type: 9
-      Percentage: 0
-      Level: 0
+      Percentage: 20
+      Level: 10
       CursePercentage: 0
       CurseLevel: 0
-    Requirements: []
+    Requirements:
+    - Stat_Type: 0
+      Requirement_Level: 1
+    - Stat_Type: 1
+      Requirement_Level: 1
+    - Stat_Type: 2
+      Requirement_Level: 0
+    - Stat_Type: 3
+      Requirement_Level: 0
+    - Stat_Type: 4
+      Requirement_Level: 0
+    - Stat_Type: 5
+      Requirement_Level: 1
+    - Stat_Type: 6
+      Requirement_Level: 0
+    - Stat_Type: 7
+      Requirement_Level: 0
+    - Stat_Type: 8
+      Requirement_Level: 1
+  CombatChannel: {fileID: 11400000, guid: 0fd066bbc9e1b664786db04e9ce53b62, type: 2}

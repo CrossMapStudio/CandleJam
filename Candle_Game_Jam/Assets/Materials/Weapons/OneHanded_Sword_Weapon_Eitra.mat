@@ -73,8 +73,8 @@ Material:
     - _BladeColor: {r: 0.7169812, g: 0.7169812, b: 0.7169812, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
-    - _MainColor: {r: 0.78431374, g: 0.19607843, b: 0.227157, a: 1}
+    - _MainColor: {r: 0.42880026, g: 0.9339623, b: 0.9339623, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
-    - _SecondaryColor: {r: 0.7169812, g: 0.44565207, b: 0.30888808, a: 0}
-    - _TertiaryColor: {r: 0.254717, g: 0.254717, b: 0.254717, a: 0}
+    - _SecondaryColor: {r: 0.4716981, g: 0.33127645, b: 0.2610656, a: 0}
+    - _TertiaryColor: {r: 0.23584908, g: 0.20173255, b: 0.20752591, a: 0}
   m_BuildTextureStacks: []

@@ -16,7 +16,7 @@ MonoBehaviour:
   SpriteMaterial: {fileID: 2100000, guid: cdd9a9b2aef8d824883df048ac6eb990, type: 2}
   StackCapacity: 1
   DropItem: {fileID: 0}
-  Item_Name: Broken Sword
+  Item_Name: Iron Sword
   Item_UseCase: Used within the weapon slot.
-  Item_Description: A broken short sword left by the previous owner.
+  Item_Description: 'A dull iron sword left by the previous owner. '
   Weapon_Type: {fileID: 11400000, guid: 5b4bbdaccf5db854d9250ba2be6beb8f, type: 2}

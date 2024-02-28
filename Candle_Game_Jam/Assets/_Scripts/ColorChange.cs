@@ -27,7 +27,7 @@ public class ColorChange : MonoBehaviour
 
     public void Update()
     {
-        TargetPosition = Vector3.Lerp(TargetPosition, Vector2.zero, Time.deltaTime * 8f);
+        TargetPosition = Vector3.Lerp(TargetPosition, Vector2.zero, Time.deltaTime * 12f);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -55,8 +55,9 @@ public class ColorChange : MonoBehaviour
 
         if (dot >= .2f)
         {
-            TargetPosition = direction * 3f;
+            TargetPosition = direction * 10f;
             Health -= damage;
+            Debug.Log("Damage: " + damage);
         }
 
         if (Health <= 0f)

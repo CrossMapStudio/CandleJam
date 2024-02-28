@@ -10,16 +10,32 @@ public class ColorChange : MonoBehaviour
     [SerializeField] private Combat_Channel _channel;
     #endregion
 
+    private Rigidbody2D _RB;
+    private Vector2 TargetPosition;
+    [SerializeField] private float Health = 100f;
+
     private void Awake()
     {
         _renderer = GetComponent<SpriteRenderer>();
+        _RB = GetComponent<Rigidbody2D>();
+    }
+
+    public void FixedUpdate()
+    {
+        _RB.MovePosition((Vector2)_RB.transform.position + (TargetPosition * Time.deltaTime));
+    }
+
+    public void Update()
+    {
+        TargetPosition = Vector3.Lerp(TargetPosition, Vector2.zero, Time.deltaTime * 8f);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Weapon")
         {
-            _channel.OnEventRaised.AddListener(Change_Color);
+            _channel.OnEventRaised.AddListener(Take_Damage);
+            _renderer.color = Color.green;
         }
     }
 
@@ -27,16 +43,25 @@ public class ColorChange : MonoBehaviour
     {
         if (collision.tag == "Weapon")
         {
-            _channel.OnEventRaised.RemoveListener(Change_Color);
+            _channel.OnEventRaised.RemoveListener(Take_Damage);
+            _renderer.color = Color.red;
         }
     }
 
-    public void Change_Color(Vector2 direction, float damage)
+    public void Take_Damage(Vector2 direction, float damage)
     {
         float dot = Vector2.Dot(direction, (transform.position - PlayerController.Player_Transform.position).normalized);
         Debug.Log("Hit Dot Product: " + dot);
 
-        if (dot >= .5f || Vector2.Distance(transform.position, PlayerController.Player_Transform.position) <= .05f)
-            _renderer.color = Color.green;
+        if (dot >= .2f)
+        {
+            TargetPosition = direction * 3f;
+            Health -= damage;
+        }
+
+        if (Health <= 0f)
+        {
+            Destroy(gameObject);
+        }
     }
 }

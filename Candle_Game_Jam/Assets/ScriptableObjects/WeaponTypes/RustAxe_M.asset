@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: RustAxe_M
   m_EditorClassIdentifier: 
   Animation_Override: {fileID: 0}
+  Attack_CombinationLimit: 3
   Stat_Group:
     Stats:
       Damage: 10

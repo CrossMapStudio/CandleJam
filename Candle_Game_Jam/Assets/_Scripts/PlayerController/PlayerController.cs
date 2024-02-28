@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,21 +11,6 @@ public class PlayerController : MonoBehaviour
     public static Rigidbody2D Player_RigidBody;
     public static SpriteRenderer Player_Renderer;
     public static Animator Player_Animator;
-
-    #region Inputs
-    //Subscribe through the Player Controller ---
-    private Player_Input Input_Controller;
-    public Player_Input Get_Input => Input_Controller;
-
-    private static InputAction Movement;
-    public static InputAction Get_Movement => Movement;
-
-    public static InputAction Interact;
-    public static InputAction Get_Interact => Interact;
-
-    public static InputAction Inventory;
-    public static InputAction Get_Inventory => Inventory;
-    #endregion
 
     StateMachine Player_StateMachine;
     public StateMachine Get_PlayerStateMachine => Player_StateMachine;
@@ -62,20 +48,6 @@ public class PlayerController : MonoBehaviour
         Player_Renderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
         Player_Animator = transform.GetChild(0).GetComponent<Animator>();
         Player_Transform = transform;
-
-        //Create a new instance for the Input ---
-        Input_Controller = new Player_Input();
-
-        Movement = Input_Controller.Player_Base.Movement;
-        Interact = Input_Controller.Player_Base.Interact;
-        Inventory = Input_Controller.Player_Base.Inventory;
-    }
-
-    private void OnEnable()
-    {
-        Movement.Enable();
-        Interact.Enable();
-        Inventory.Enable();
     }
 
     public void Start()
@@ -88,7 +60,7 @@ public class PlayerController : MonoBehaviour
         Player_StateMachine.executeStateUpdate();
 
         //For Keeping the Last Direction the Player Moved ---
-        Vector2 stored = Get_Movement.ReadValue<Vector2>();
+        Vector2 stored = Input_Driver.Get_Movement.ReadValue<Vector2>();
         storedDirection = stored == Vector2.zero ? storedDirection : stored;
     }
 
@@ -122,12 +94,14 @@ public class Player_Movement : stateDriverInterface
         PlayerController.Player_Animator.Play("Movement");
         WeaponController.Controller.Weapon_StartMove();
 
-        PlayerController.Interact.performed += On_Interact;
+        Input_Driver.Get_Interact.performed += On_Interact;
+        Input_Driver.Get_AttackLight.performed += On_LightAttack;
     }
 
     public void onExit()
     {
-        PlayerController.Interact.performed -= On_Interact;
+        Input_Driver.Get_Interact.performed -= On_Interact;
+        Input_Driver.Get_AttackLight.performed -= On_LightAttack;
     }
 
     public void onFixedUpdate()
@@ -147,7 +121,7 @@ public class Player_Movement : stateDriverInterface
 
     public void onUpdate()
     {
-        Movement = PlayerController.Get_Movement.ReadValue<Vector2>();
+        Movement = Input_Driver.Get_Movement.ReadValue<Vector2>();
 
         PlayerController.Player_Animator.SetFloat("XMovement", Movement.x);
         PlayerController.Player_Animator.SetFloat("YMovement", Movement.y);
@@ -157,12 +131,29 @@ public class Player_Movement : stateDriverInterface
         WeaponController.Controller.Weapon_Flip(true ? PlayerController.Player_Controller.Get_StoredDirection.x < 0 : false);
     }
 
-    public void On_Interact(InputAction.CallbackContext obj)
+    public void On_Interact(InputAction.CallbackContext context)
     {
         if (PlayerController.Player_Controller.Interactable_Object != null)
         {
             PlayerController.Player_Controller.Interactable_Object.Pickup_Object.On_Interact();
         }
+    }
+
+    public void On_LightAttack(InputAction.CallbackContext context)
+    {
+        if (context.interaction is HoldInteraction)
+        {
+            Debug.Log("Player Held - Heavy Attack");
+        }
+        else
+        {
+            PlayerController.Player_Controller.Get_PlayerStateMachine.changeState(new Player_LightAttack());
+        }
+    }
+
+    public void On_HeavyAttack(InputAction.CallbackContext obj)
+    {
+        
     }
 }
 public class Player_Hold : stateDriverInterface
@@ -211,20 +202,41 @@ public class Player_LightAttack : stateDriverInterface
 {
     public string ID => "Player_LightAttack";
 
+    int comboCount = 0;
+    int comboCountLimit = 0;
+
+    //Used for Shifting the Player On Attack ---
+    Vector2 TargetMovePoint;
+    float StepDistance = 1.8f;
+
+    float MovementInfluence = .35f;
+
+    private UnityEngine.Events.UnityEvent QueueAction;
+
+    public Player_LightAttack()
+    {
+        comboCountLimit = WeaponController.Controller.Get_AssignedWeaponType.Attack_CombinationLimit;
+        WeaponController.Controller.Get_AssignedWeaponType.Get_OnAttackFinish.AddListener(On_AttackFinished);
+    }
+
     public void onEnter()
     {
-        PlayerController.Player_Animator.Play("Light_Attack0", 0, 0);
-        WeaponController.Controller.On_LightAttackInitialize();
+        TargetMovePoint = Input_Driver.Get_Movement.ReadValue<Vector2>().normalized;
+        TargetMovePoint *= StepDistance;
+        PerformAttack();
+        Input_Driver.Get_AttackLight.performed += QueueAttack;
     }
 
     public void onExit()
     {
-
+        QueueAction = null;
+        Input_Driver.Get_AttackLight.performed -= QueueAttack;
+        WeaponController.Controller.Get_AssignedWeaponType.Get_OnAttackFinish.RemoveListener(On_AttackFinished);
     }
 
     public void onFixedUpdate()
     {
-
+        PlayerController.Player_RigidBody.MovePosition(PlayerController.Player_RigidBody.position + (TargetMovePoint + (Input_Driver.Get_Movement.ReadValue<Vector2>() * MovementInfluence)) * Time.deltaTime);
     }
 
     public void onGUI()
@@ -239,7 +251,66 @@ public class Player_LightAttack : stateDriverInterface
 
     public void onUpdate()
     {
+        TargetMovePoint = Vector3.Lerp(TargetMovePoint, Vector2.zero, Time.deltaTime * 10f);
+    }
 
+    private void QueueAttack(InputAction.CallbackContext context)
+    {
+        if (QueueAction == null)
+        {
+            QueueAction = new UnityEngine.Events.UnityEvent();
+            if (context.interaction is HoldInteraction)
+            {
+                Debug.Log("Player Held - Heavy Attack");
+                //Change the State on Perform Attack to Heavy Attack ---
+                QueueAction.AddListener(PerformHeavyAttack);
+            }
+            else
+            {
+                comboCount++;
+                QueueAction.AddListener(PerformAttack);
+            }
+        }
+    }
+
+    private void On_AttackFinished()
+    {
+        if (QueueAction != null)
+        {
+            QueueAction.Invoke();
+            QueueAction.RemoveAllListeners();
+            QueueAction = null;
+        }
+        else
+        {
+            PlayerController.Player_Controller.Get_PlayerStateMachine.changeState(new Player_Movement());
+        }
+    }
+
+    //Called from the Enter State ---
+    private void PerformAttack()
+    {
+        if (comboCount < comboCountLimit)
+        {
+            TargetMovePoint = Input_Driver.Get_Movement.ReadValue<Vector2>();
+            TargetMovePoint *= StepDistance;
+
+            PlayerController.Player_Renderer.flipX = true ? PlayerController.Player_Controller.Get_StoredDirection.x < 0 : false;
+            WeaponController.Controller.Weapon_Flip(true ? PlayerController.Player_Controller.Get_StoredDirection.x < 0 : false);
+
+            PlayerController.Player_Animator.Play("Light_Attack" + comboCount, 0, 0);
+            WeaponController.Controller.On_LightAttackInitialize(comboCount);
+        }
+        else
+        {
+            PlayerController.Player_Controller.Get_PlayerStateMachine.changeState(new Player_Movement());
+        }
+    }
+
+    private void PerformHeavyAttack()
+    {
+        Debug.Log("Heavy Attack Performed");
+        PlayerController.Player_Controller.Get_PlayerStateMachine.changeState(new Player_Movement());
     }
 }
 #endregion

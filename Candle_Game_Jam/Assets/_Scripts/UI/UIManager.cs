@@ -73,8 +73,7 @@ public class UIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerController.Get_Inventory.Enable();
-        PlayerController.Get_Inventory.performed += ToggleUI;
+        Input_Driver.Get_Inventory.performed += ToggleUI;
     }
 
     public void ToggleUI(InputAction.CallbackContext obj)

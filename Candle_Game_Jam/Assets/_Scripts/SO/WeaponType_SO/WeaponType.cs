@@ -9,6 +9,8 @@ public abstract class WeaponType : ScriptableObject
 
     //Weapon Statistics for Melee ---
     public AnimatorOverrideController Animation_Override;
+    public int Attack_CombinationLimit;
+
     public StatisticGroup Stat_Group;
 
     public abstract void OnLightAttack_Initialized();

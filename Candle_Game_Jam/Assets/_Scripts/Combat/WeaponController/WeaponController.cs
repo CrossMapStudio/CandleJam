@@ -11,7 +11,7 @@ public class WeaponController : MonoBehaviour
     [SerializeField] private Collider2D HitRadius;
 
     //Melee ->
-    [SerializeField] private Combat_Channel Combat_Channel;
+    //[SerializeField] private Combat_Channel Combat_Channel;
 
     //Weapon Type
     private WeaponType Assigned_WeaponType;

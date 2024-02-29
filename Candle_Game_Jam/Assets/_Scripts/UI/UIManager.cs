@@ -52,6 +52,13 @@ public class UIManager : MonoBehaviour
     public Action CenterTextCallBack;
     #endregion
 
+    //Top Message on Pickup
+    #region Pickup Notification
+    public TopMessage_Channel PickupChannel;
+    private Queue<Item_Data> TopMessageQueue;
+    [SerializeField] private TopMessage_UI TopMessage;
+    #endregion
+
     private void Awake()
     {
         Manager = this;
@@ -69,11 +76,37 @@ public class UIManager : MonoBehaviour
         {
             UI_Inventory.Add(Inventory_Menu_Container.GetChild(i).GetComponent<UIInventoryItem>());
         }
+
+        TopMessageQueue = new Queue<Item_Data>();
+        PickupChannel.OnEventRaised.AddListener(QueueTopMessage);
     }
 
     private void OnEnable()
     {
         Input_Driver.Get_Inventory.performed += ToggleUI;
+    }
+
+    public void QueueTopMessage(Item_Data _data)
+    {
+        TopMessageQueue.Enqueue(_data);
+        if (TopMessageQueue.Count == 1)
+        {
+            StartCoroutine(ShowTopMessage());
+        }
+    }
+
+    public IEnumerator ShowTopMessage()
+    {
+        //Show UI Element ---
+        TopMessage.gameObject.SetActive(true);
+        var Top = TopMessageQueue.Dequeue();
+        TopMessage.ShowTopMessage(Top.Inventory_ItemSprite, Top.Get_Material, Top.Item_Name);
+        yield return new WaitForSecondsRealtime(3f);
+        TopMessage.gameObject.SetActive(false);
+        if (TopMessageQueue.Count != 0)
+        {
+            StartCoroutine(ShowTopMessage());
+        }
     }
 
     public void ToggleUI(InputAction.CallbackContext obj)

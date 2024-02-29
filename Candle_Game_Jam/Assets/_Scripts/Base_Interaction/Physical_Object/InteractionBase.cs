@@ -15,6 +15,9 @@ public class InteractionBase : MonoBehaviour
     [Header("Inventory Item Data")]
     public Item_Data ItemData;
 
+    [Header("UI Channel - Top Message")]
+    public TopMessage_Channel UI_Channel;
+
     private void Awake()
     {
         Pickup_Object = new Inventory_Item_Pickup(this);
@@ -38,6 +41,8 @@ public class Inventory_Item_Pickup : Physical_Object
     {
         if (GameManager.Add_Item(Base.ItemData))
         {
+            //Call To UI SO Link ---
+            Base.UI_Channel.RaiseEvent(Base.ItemData);
             GameObject.Destroy(Base.gameObject);
         }
     }

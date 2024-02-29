@@ -32,7 +32,8 @@ public class ColorChange : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Weapon")
+        Debug.Log(collision.name);
+        if (collision.gameObject.tag == "Weapon")
         {
             _channel.OnEventRaised.AddListener(Take_Damage);
             _renderer.color = Color.green;
@@ -41,7 +42,7 @@ public class ColorChange : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Weapon")
+        if (collision.gameObject.tag == "Weapon")
         {
             _channel.OnEventRaised.RemoveListener(Take_Damage);
             _renderer.color = Color.red;
@@ -53,9 +54,9 @@ public class ColorChange : MonoBehaviour
         float dot = Vector2.Dot(direction, (transform.position - PlayerController.Player_Transform.position).normalized);
         Debug.Log("Hit Dot Product: " + dot);
 
-        if (dot >= .2f)
+        if (dot >= .2f || Vector2.Distance(transform.position, PlayerController.Player_Transform.position) <= .3f)
         {
-            TargetPosition = direction * 10f;
+            TargetPosition = direction * 5f;
             Health -= damage;
             Debug.Log("Damage: " + damage);
         }
